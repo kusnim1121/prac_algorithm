@@ -1,0 +1,39 @@
+//https://www.acmicpc.net/problem/1021
+
+#include<stdio.h>
+#include<deque>
+
+using namespace std;
+int N,M;
+deque<int> D;
+int main(){
+    scanf("%d%d",&N,&M);
+    for(int i=1;i<=N;i++) D.push_back(i);
+    int cnt = 0;
+    while(M--){
+        int x;
+        scanf("%d",&x);
+        for(int i=0;i<D.size();i++){
+            if(x==D[i]){
+                if((i)> D.size()/2){
+                    for(int j=0;j<D.size()-i;j++){
+                        D.push_front(D.back());
+                        D.pop_back();
+                        cnt++;
+                    }
+                    D.pop_front();
+                }else{
+                    for(int j=0;j<i;j++){
+                        D.push_back(D.front());
+                        D.pop_front();
+                        cnt++;
+                    }
+                    D.pop_front();
+                }
+                break;
+            }
+        }
+    }
+    printf("%d",cnt);
+    return 0;
+}
