@@ -1,0 +1,38 @@
+//https://www.acmicpc.net/problem/12015
+
+#include<stdio.h>
+#include<vector>
+
+using namespace std;
+
+int N;
+int len;
+vector<int> V;
+int f(int s,int e,int x){
+	if(s>=e) return e;
+	int m = (s+e)/2;
+	//if(V[m] == x) return m;
+	if(x>V[m]){
+		return f(m+1,e,x);
+	}else{
+		return f(s,m,x);
+	}
+}
+int main(){
+	scanf("%d",&N);
+	for(int i=0;i<N;i++){
+		int x;
+		scanf("%d",&x);
+		int idx;
+		if((idx = f(0,len,x)) == len){
+			V.push_back(x);
+			len++;			
+		}else{
+			V[idx] = x;
+		}
+	}
+	printf("%d",len);
+	return 0;
+}
+
+//6 10 20 10 30 20 50
