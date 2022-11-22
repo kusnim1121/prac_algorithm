@@ -1,0 +1,63 @@
+//https://www.acmicpc.net/problem/5430
+
+#include<stdio.h>
+#include<deque>
+#include<string.h>
+
+using namespace std;
+
+int T;
+char p[111111];
+deque<int> D;
+int main(){
+    scanf("%d",&T);
+    while(T--){
+        while(!D.empty()) D.pop_front();
+        scanf("%s",p);
+        int n;
+        scanf("%d",&n);
+        if(n==0){
+            scanf(" %*c %*c ");
+        }else{
+            for(int i=0;i<n;i++){
+                int tmp;
+                scanf(" %*c%d ",&tmp);
+                D.push_back(tmp);
+            }
+            scanf(" %*c ");
+        }
+        
+        //executing the functions
+        int pLen = strlen(p);
+        int i=0;
+        int dir = 1;
+        for(;i<pLen;i++){
+            if(p[i] == 'D'){
+                if(D.empty()) break;
+                if(dir==1)D.pop_front();
+                else D.pop_back();
+            }else if(p[i] =='R'){
+                dir^=1;
+            }
+        }
+        //if try to delete when empty, error occurs
+        if(i<pLen){
+            printf("error\n");
+            continue;
+        }
+        
+        printf("[");
+        while(!D.empty()){
+            if(dir==1){
+                printf("%d",D.front());
+                D.pop_front();
+            }else{
+                printf("%d",D.back());
+                D.pop_back();
+            } 
+            if(D.size()!=0)printf(",");
+        }
+        printf("]\n");
+    }
+    return 0;
+}
