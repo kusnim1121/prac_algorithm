@@ -1,0 +1,47 @@
+//https://www.acmicpc.net/problem/2143
+
+#include<stdio.h>
+#include<unordered_map>
+using namespace std;
+
+typedef long long ll;
+int T,n,m;
+int A[1111],B[1111];
+unordered_map<int,int> UM;
+int main(){
+    scanf("%d%d",&T,&n);
+    for(int i=1;i<=n;i++){
+        int tmp;
+        scanf("%d",&tmp);
+        A[i]=tmp+A[i-1];
+    }
+    scanf("%d",&m);
+    for(int i=1;i<=m;i++){
+        int tmp;
+        scanf("%d",&tmp);
+        B[i] = tmp+B[i-1];
+    }
+    for(int i=1;i<=n;i++){
+        for(int j=i;j<=n;j++){
+            int idx = A[j]-A[i-1];
+            if(UM.find(idx)!=UM.end()){
+                UM[idx]++;
+            }else{
+                UM.insert({idx,1});
+            }
+        }
+    }
+    ll ans = 0;
+    for(int i=1;i<=m;i++){
+        for(int j=i;j<=m;j++){
+            //printf("%d\n",T-(B[j]-B[i-1]));
+            int idx = T-(B[j]-B[i-1]);
+            if(UM.find(idx)!=UM.end()){
+                ans+=UM[idx];
+                //printf("found\n");
+            }
+        }
+    }
+    printf("%lld",ans);
+    return 0;
+}
