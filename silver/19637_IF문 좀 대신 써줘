@@ -1,0 +1,29 @@
+//https://www.acmicpc.net/problem/19637
+
+#include<iostream>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+int N,M;
+vector<int> VI;
+vector<string> VS;
+int main(){
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+	cin>>N>>M;
+	for(int i=0;i<N;i++){
+		string s;
+		int uLim;
+		cin>>s>>uLim;
+		VS.push_back(s);
+		VI.push_back(uLim);	
+	}
+	for(int i=0;i<M;i++){
+		int x;
+		cin>>x;
+		int idx = lower_bound(VI.begin(),VI.end(),x)-VI.begin();
+		cout<<VS[idx]<<"\n";
+	}
+	return 0;	
+}
