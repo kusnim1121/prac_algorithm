@@ -1,0 +1,44 @@
+//https://www.acmicpc.net/problem/11399
+
+#include<stdio.h>
+
+int N;
+int A[1111];
+void swap(int a,int b){
+    int tmp = A[a];
+    A[a] = A[b];
+    A[b] = tmp;
+}
+void qsort(int s,int e){
+    if(s>=e) return;
+    int i = s,j = e;
+    int pivot = A[s];
+    while(true){
+        while(A[i]<=pivot && i<=e){
+            i++;
+        }
+        while(A[j]>pivot && j>=s){
+            j--;
+        }
+        
+        if(i>j){
+            swap(s,j);
+            qsort(s,j-1);
+            qsort(j+1,e);
+            break;
+        }else{
+            swap(i,j);
+        }
+    }
+}
+int main(){
+    scanf("%d",&N);
+    for(int i=0;i<N;i++)scanf("%d",&A[i]);
+    qsort(0,N-1);
+    int sum = 0;
+    for(int i=0;i<N;i++){
+        sum+= (N-i)*A[i];
+    }
+    printf("%d",sum);
+    return 0;
+}
