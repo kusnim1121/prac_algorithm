@@ -1,0 +1,22 @@
+//https://www.acmicpc.net/problem/1629
+
+#include<stdio.h>
+
+typedef long long ll;
+ll A,B,C;
+ll res=1;
+int main(){
+    scanf("%lld%lld%lld",&A,&B,&C);
+    while(B>0){
+        if(B%2==1){
+            res*=A;
+            res%=C;
+            B--;
+        }
+        A*=A;
+        A%=C;
+        B/=2;
+    }
+    printf("%lld",res);
+    return 0;
+}
