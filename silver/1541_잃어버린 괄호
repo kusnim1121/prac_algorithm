@@ -1,0 +1,70 @@
+//https://www.acmicpc.net/problem/1541
+
+#include<stdio.h>
+#include<string.h>
+
+char s[51];
+char op[51];
+int num[51];
+int stoi(char*s){
+	int len = strlen(s);
+	int ret = 0;
+	int mult = 1;
+	for(int i=len-1;i>=0;i--){
+		ret += (s[i]-'0') * mult;
+		mult*=10;	
+	}
+	return ret;
+}
+int main(){
+	scanf("%s",s);
+	int i=0;
+	int opIdx = 0;
+	int numIdx = 0;
+	char tmpNum[8];
+	int tmpNumLen = 0;
+    
+	/*
+    //문자열 처리
+	while(s[i]!='\0'){
+		if(s[i] == '+' || s[i] == '-'){
+			op[opIdx++] = s[i];
+			tmpNum[tmpNumLen] = '\0';
+			tmpNumLen = 0;
+			num[numIdx++] = stoi(tmpNum);
+		}else{
+			tmpNum[tmpNumLen] = s[i];
+			tmpNumLen++;
+		}
+		i++;
+	}
+    여기서 문제 발생한걸로 예상됨. 마지막에 ￦0 추가 안해줘서.
+	num[numIdx++] = stoi(tmpNum);
+	*/
+    
+    //문자열 처리
+	i = 0;
+	while(s[i]!='\0'){
+	    if(s[i] == '-' || s[i] == '+') op[opIdx++] = s[i];
+	    i++;
+	}
+	char* pt = strtok(s,"-+");
+	while(pt!=NULL){
+	    num[numIdx++] = stoi(pt);
+	    //printf("%d\n",stoi(pt));
+	    pt = strtok(NULL,"-+");
+	}
+    
+	//calculation
+	int res = num[0];
+	int y=0;
+	bool isMinus = false;
+	//after - is found, subtract all trailing numbers
+	while(y<opIdx){
+		if(op[y] == '-' ) isMinus = true;
+		res = res + (isMinus? -1: 1) * num[y+1];
+		y++;
+	}
+	printf("%d",res);
+	return 0;	
+}
