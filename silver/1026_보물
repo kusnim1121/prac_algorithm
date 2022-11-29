@@ -5,6 +5,7 @@
 #include<algorithm>
 #include<functional>
 using namespace std;
+
 int N;
 vector<int> A;
 vector<int> B;
