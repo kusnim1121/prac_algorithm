@@ -3,7 +3,6 @@
 #include<stdio.h>
 #include<deque>
 #include<string.h>
-
 using namespace std;
 
 int T;
