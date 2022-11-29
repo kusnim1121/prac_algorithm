@@ -24,7 +24,6 @@ int lower_bound2(int s, int e,int x){
         }
     }
 }
-
 int main(){
     scanf("%d",&N);
     V.reserve(N);
