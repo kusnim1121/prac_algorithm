@@ -1,6 +1,5 @@
 //https://www.acmicpc.net/problem/1780
 
-//#include<stdio.h>
 #include<iostream>
 using namespace std;
 
