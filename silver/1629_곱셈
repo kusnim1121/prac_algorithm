@@ -5,6 +5,7 @@
 typedef long long ll;
 ll A,B,C;
 ll res=1;
+
 int main(){
     scanf("%lld%lld%lld",&A,&B,&C);
     while(B>0){
