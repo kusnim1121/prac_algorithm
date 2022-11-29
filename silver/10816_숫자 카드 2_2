@@ -15,7 +15,6 @@ int lower_bound(int* A, int len, int x){
     }
     return e;
 }
-
 int upper_bound(int* A, int len, int x){
     int s = 0;
     int e = len;
