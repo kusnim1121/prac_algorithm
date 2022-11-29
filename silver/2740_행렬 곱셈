@@ -1,7 +1,6 @@
 //https://www.acmicpc.net/problem/2740
 
 #include<stdio.h>
-
 int N,M,K;
 int A[100][100],B[100][100],C[100][100];
 int main(){
