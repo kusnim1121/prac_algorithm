@@ -36,6 +36,7 @@ int main(){
     for(int i=0;i<N;i++)scanf("%d",&A[i]);
     qsort(0,N-1);
     int sum = 0;
+    //greedy algorithm
     for(int i=0;i<N;i++){
         sum+= (N-i)*A[i];
     }
