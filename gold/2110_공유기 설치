@@ -3,7 +3,6 @@
 #include<stdio.h>
 #include<algorithm>
 using namespace std;
-
 int N,C;
 int A[200010];
 int ans = -1;
