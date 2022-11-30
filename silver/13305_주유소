@@ -1,0 +1,26 @@
+//https://www.acmicpc.net/problem/13305
+
+#include<stdio.h>
+
+typedef long long ll;
+
+int N;
+int dist[100010];
+int price[100010];
+int main(){
+    scanf("%d",&N);
+    for(int i=1;i<N;i++){
+        scanf("%d",&dist[i]);
+    }
+    for(int i=0;i<N;i++){
+        scanf("%d",&price[i]);
+    }
+    ll sum = 0;
+    int targPrice = price[0];
+    for(int i=1;i<N;i++){
+        sum+= (ll)targPrice * dist[i];
+        if(price[i]<targPrice)targPrice = price[i];
+    }
+    printf("%lld",sum);
+    return 0;
+}
