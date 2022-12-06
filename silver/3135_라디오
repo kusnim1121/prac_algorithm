@@ -1,0 +1,27 @@
+//https://www.acmicpc.net/problem/3135
+
+#include<stdio.h>
+#include<vector>
+
+using namespace std;
+
+int A,B,N;
+vector<int> V;
+int abs(int a){return a<0?-a:a;}
+int main(){
+    scanf("%d%d%d",&A,&B,&N);
+    for(int i=0;i<N;i++){
+        int x;
+        scanf("%d",&x);
+        V.push_back(x);
+    }
+    
+    int min = abs(B-A);
+    for(int i=0;i<N;i++){
+        int diff = abs(B-V[i]);
+        if(diff<min)min = diff;
+    }
+    min = min == abs(B-A)? min:min+1;
+    printf("%d",min);
+    return 0;
+}
