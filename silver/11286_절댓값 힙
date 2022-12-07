@@ -1,0 +1,76 @@
+//https://www.acmicpc.net/problem/11286
+
+#include<stdio.h>
+
+int N;
+int len;
+int A[100010];
+int abs(int x){return x<0?-x:x;}
+void swap(int a,int b){
+    int tmp = A[a];
+    A[a] = A[b];
+    A[b] = tmp;
+}
+bool empty(){
+    return len==0?true:false;
+}
+void printQ(){
+    for(int i=1;i<=len;i++){
+        printf("%d ",A[i]);
+    }
+    printf("\n----------\n");
+}
+void heapify(int idx){
+    if(idx*2 > len) return;
+    int x = idx*2;
+    if((idx*2+1)<=len){
+        if(abs(A[x]) > abs(A[idx*2+1])) {
+            x = idx*2+1;
+        }
+        if(abs(A[x]) == abs(A[idx*2+1])){
+            if(A[x] > A[idx*2+1]) x = idx*2+1;
+        }
+    }
+    if(abs(A[idx]) < abs(A[x])) return;
+    if(abs(A[idx]) == abs(A[x])){
+        if(A[idx] <= A[x]) return;
+    }
+    swap(idx,x);
+    heapify(x);
+}
+int pop(){
+    if(empty()) return 0;
+    int ret = A[1];
+    A[1] = A[len--];
+    heapify(1);
+    return ret;
+}
+void push(int x){
+    A[++len] = x;
+    int n = len;
+    int absX = abs(x);
+    while(n>1){
+        if(absX > abs(A[n/2])) break;
+        if(absX == abs(A[n/2])){
+            if(x >= A[n/2]) break;
+        }
+        swap(n,n/2);
+        n/=2;
+    }
+}
+int main(){
+    scanf("%d",&N);
+    while(N--){
+        int x;
+        scanf("%d",&x);
+        if(x==0){
+            printf("%d\n",pop());
+            //printQ();
+            continue;
+        }else{
+            push(x);
+        }
+        //printQ();
+    }
+    return 0;
+}
