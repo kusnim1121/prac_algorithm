@@ -1,0 +1,33 @@
+//https://www.acmicpc.net/problem/1655
+
+#include<stdio.h>
+#include<queue>
+#include<functional>
+using namespace std;
+
+priority_queue<int,vector<int>,greater<int>> GPQ;
+priority_queue<int,vector<int>,less<int>> LPQ;
+int main(){
+    int n;
+    scanf("%d",&n);
+    int mid;
+    //first element
+    scanf("%d",&mid);
+    printf("%d\n",mid);
+    for(int i=2;i<=n;i++){
+        int x;
+        scanf("%d",&x);
+        x >= mid ? GPQ.push(x) : LPQ.push(x);
+        if(LPQ.size() < (i-1)/2){
+            LPQ.push(mid);
+            mid = GPQ.top();
+            GPQ.pop();
+        }else if(GPQ.size() < i/2){
+            GPQ.push(mid);
+            mid = LPQ.top();
+            LPQ.pop();
+        }
+        printf("%d\n",mid);
+    }
+    return 0;
+}
