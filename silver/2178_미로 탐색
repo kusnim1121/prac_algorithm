@@ -1,0 +1,45 @@
+//https://www.acmicpc.net/source/52547737
+
+#include<stdio.h>
+#include<queue>
+#include<utility>
+using namespace std;
+
+typedef pair<int,int> pii;
+
+int N,M;
+int A[111][111];
+int dist[111][111];
+int dx[] = {1,-1,0,0};
+int dy[] = {0,0,1,-1};
+queue<pii> Q;
+void bfs(int i,int j){
+    Q.push({i,j});
+    while(!Q.empty()){
+        pii tar = Q.front();
+        Q.pop();
+        //A[tar.first][tar.second] = 0;
+        for(int k=0;k<4;k++){
+            int px = tar.first + dx[k];
+            int py = tar.second + dy[k];
+            if(A[px][py] != 0) {
+                Q.push({px,py});
+                A[px][py] = 0;
+                dist[px][py] = dist[tar.first][tar.second] +1;   
+            }
+        }
+    }
+    
+}
+int main(){
+    scanf("%d%d",&N,&M);
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=M;j++){
+            scanf("%1d",&A[i][j]);
+        }
+    }
+    dist[1][1] = 1;
+    bfs(1,1);
+    printf("%d",dist[N][M]);
+    return 0;
+}
