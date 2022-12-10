@@ -1,0 +1,42 @@
+//https://www.acmicpc.net/problem/2667
+
+#include<stdio.h>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+int N;
+int A[30][30];
+int cnt;
+int num;
+vector<int> V;
+void dfs(int i,int j){
+    if(A[i][j]==0) return;
+    A[i][j]=0;
+    cnt++;
+    dfs(i+1,j);
+    dfs(i-1,j);
+    dfs(i,j+1);
+    dfs(i,j-1);
+}
+int main(){
+    scanf("%d",&N);
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=N;j++){
+            scanf("%1d",&A[i][j]);
+        }
+    }
+    
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=N;j++){
+            if(A[i][j] == 0) continue;
+            cnt = 0;
+            dfs(i,j);
+            V.push_back(cnt);
+        }
+    }
+    sort(V.begin(),V.end());
+    printf("%d\n",V.size());
+    for(int i=0;i<V.size();i++)printf("%d\n",V[i]);
+    return 0;
+}
