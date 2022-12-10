@@ -1,0 +1,36 @@
+//https://www.acmicpc.net/problem/24479
+
+#include<stdio.h>
+#include<vector>
+#include<queue>
+#include<functional>
+using namespace std;
+
+int N,M,R;
+bool visited[100010];
+priority_queue<int,vector<int>,greater<int>> Q[100010];
+int A[100010];
+int cnt = 0;
+void dfs(int n){
+    if(visited[n]) return;
+    visited[n] = true;
+    A[n] = ++cnt;
+    while(!Q[n].empty()){
+        dfs(Q[n].top());
+        Q[n].pop();
+    }
+}
+int main(){
+    scanf("%d%d%d",&N,&M,&R);
+    for(int i=0;i<M;i++){
+        int u,v;
+        scanf("%d%d",&u,&v);
+        Q[u].push(v);
+        Q[v].push(u);
+    }
+    dfs(R);
+    for(int i=1;i<=N;i++){
+        printf("%d\n",A[i]);
+    }
+    return 0;
+}
