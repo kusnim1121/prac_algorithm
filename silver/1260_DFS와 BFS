@@ -1,0 +1,50 @@
+//https://www.acmicpc.net/problem/1260
+
+#include<stdio.h>
+#include<vector>
+#include<queue>
+#include<algorithm>
+using namespace std;
+
+int N,M,S;
+vector<int> V[1111];
+queue<int> Q;
+int visitedD[1111];
+int visitedB[1111];
+void dfs(int n){
+    if(visitedD[n]) return;
+    visitedD[n] = 1;
+    printf("%d ",n);
+    for(int i=0;i<V[n].size();i++){
+        dfs(V[n][i]);
+    }
+}
+void bfs(int n){
+    Q.push(n);
+    while(!Q.empty()){
+        int x = Q.front();
+        Q.pop();
+        if(visitedB[x]) continue;
+        visitedB[x]=1;
+        printf("%d ",x);
+        for(int i=0;i<V[x].size();i++){
+            Q.push(V[x][i]);
+        }
+    }
+}
+int main(){
+    scanf("%d%d%d",&N,&M,&S);
+    for(int i=0;i<M;i++){
+        int u,v;
+        scanf("%d%d",&u,&v);
+        V[u].push_back(v);
+        V[v].push_back(u);
+    }
+    for(int i=0;i<=N;i++){
+        sort(V[i].begin(),V[i].end());
+    }
+    dfs(S);
+    printf("\n");
+    bfs(S);
+    return 0;
+}
