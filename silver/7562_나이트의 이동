@@ -1,0 +1,47 @@
+//https://www.acmicpc.net/problem/7562
+
+#include<stdio.h>
+#include<utility>
+#include<queue>
+using namespace std;
+typedef pair<int,int> pii;
+
+int T;
+int dx[] = {1,1,-1,-1,2,2,-2,-2};
+int dy[] = {2,-2,2,-2,1,-1,1,-1};
+int bfs(pii start, pii end,int boardSize){
+    int map[333][333]={0};
+    int visited[333][333] = {0};
+    queue<pii> Q;
+    Q.push(start);
+    while(!Q.empty()){
+        pii tar = Q.front();
+        Q.pop();
+        
+        if(tar == end) break;
+        
+        if(visited[tar.first][tar.second])continue;
+        visited[tar.first][tar.second] = 1;
+        
+        for(int i=0;i<8;i++){
+            int px = tar.first + dx[i];
+            int py = tar.second + dy[i];
+            if(px<0 || px >= boardSize || py<0 || py>=boardSize)continue;
+            map[px][py] = map[tar.first][tar.second] + 1;
+            Q.push({px,py});
+        }
+    }
+    return map[end.first][end.second];
+}
+int main(){
+    scanf("%d",&T);
+    while(T--){
+        int I;
+        scanf("%d",&I);
+        pii start,end;
+        scanf("%d%d",&start.first,&start.second);
+        scanf("%d%d",&end.first,&end.second);
+        printf("%d\n",bfs(start,end,I));
+    }
+    return 0;
+}
