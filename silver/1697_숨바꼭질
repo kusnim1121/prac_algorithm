@@ -1,0 +1,29 @@
+//https://www.acmicpc.net/problem/1697
+
+#include<stdio.h>
+#include<queue>
+#include<utility>
+using namespace std;
+
+typedef pair<int,int> pii;
+int visited[100010];
+int N,K;
+queue<pii> Q;
+int main(){
+    scanf("%d%d",&N,&K);
+    Q.push({N,0});
+    pii tar;
+    while(!Q.empty()){
+        tar = Q.front();
+        Q.pop();
+        if(tar.first == K) break;
+        if(tar.first < 0 || tar.first > 100000) continue; 
+        if(visited[tar.first]) continue;
+        visited[tar.first] = 1;
+        Q.push({tar.first*2,tar.second+1});
+        Q.push({tar.first-1,tar.second+1});
+        Q.push({tar.first+1,tar.second+1});
+    }
+    printf("%d",tar.second);
+    return 0;
+}
