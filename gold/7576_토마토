@@ -1,0 +1,59 @@
+//https://www.acmicpc.net/problem/7576
+
+#include<stdio.h>
+#include<queue>
+#include<utility>
+using namespace std;
+typedef pair<int,int> pii;
+queue<pii> Q;
+int M,N;
+int A[1111][1111];
+int dx[] = {1,-1,0,0};
+int dy[] = {0,0,1,-1};
+
+void printBoard(){
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=M;j++){
+            printf("%2d ",A[i][j]);
+        }
+        printf("\n");
+    }
+    printf("------------\n");
+}
+
+int main(){
+    scanf("%d%d",&M,&N);
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=M;j++){
+            scanf("%d",&A[i][j]);
+            if(A[i][j] == 1) Q.push({i,j});
+        }
+    }
+    while(!Q.empty()){
+        pii p = Q.front();
+        Q.pop();
+        //printBoard();
+        for(int i=0;i<4;i++){
+            int px = p.first + dx[i];
+            int py = p.second + dy[i];
+            if(px<=N && px> 0 && py <=M && py>0){
+                if(A[px][py] == 0) {
+                    A[px][py] = A[p.first][p.second]+1;
+                    Q.push({px,py});
+                }
+            }
+        }
+    }
+    int max = 0;
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=M;j++){
+            if(A[i][j] == 0){
+                printf("-1");
+                return 0;
+            }
+            if(A[i][j] > max) max = A[i][j];
+        }
+    }
+    printf("%d",max-1);
+    return 0;
+}
