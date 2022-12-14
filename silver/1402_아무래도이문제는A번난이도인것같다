@@ -1,0 +1,14 @@
+//https://www.acmicpc.net/problem/1402
+
+#include<stdio.h>
+
+int T;
+int main(){
+    scanf("%d",&T);
+    while(T--){
+        int a,b;
+        scanf("%d%d",&a,&b);
+        printf("yes\n");
+    }
+    return 0;
+}
