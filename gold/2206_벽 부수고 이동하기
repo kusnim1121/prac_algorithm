@@ -1,0 +1,57 @@
+//https://www.acmicpc.net/problem/2206
+
+#include<stdio.h>
+#include<queue>
+#include<tuple>
+using namespace std;
+
+//row,col,bHasDestroyedWall
+typedef tuple<int,int,bool> tiii;
+int N,M;
+int map[1111][1111];
+int visited[1111][1111][2];
+queue<tiii> Q;
+
+int dx[] = {1,-1,0,0};
+int dy[] = {0,0,1,-1};
+int main(){
+    scanf("%d%d",&N,&M);
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=M;j++){
+            scanf("%1d",&map[i][j]);
+        }
+    }
+    Q.push({1,1,false});
+    visited[1][1][0]=1;
+    while(!Q.empty()){
+        tiii front = Q.front();
+        Q.pop();
+        auto [a,b,c] = front;
+        //printf("%d %d %s\n",a,b,d?"true":"false");
+        if(a==N && b==M){
+            printf("%d",visited[N][M][c]);
+            return 0;
+        }
+        //calculate movable spots, and add them to queue if possible
+        for(int i=0;i<4;i++){
+            int px = a+dx[i];
+            int py = b+dy[i];
+            if(visited[px][py][c]) continue;
+            if(px<=N && py <=M && px>0 && py>0){
+                if(map[px][py] == 1){
+                    //if it is a wall and if you haven't broken a wall yet
+                    if(c == false){
+                        visited[px][py][1] = visited[a][b][0]+1;
+                        Q.push({px,py,true});
+                    }
+                }else{
+                    //if it is not a wall
+                    visited[px][py][c] = visited[a][b][c]+1;
+                    Q.push({px,py,c});
+                }
+            }
+        }
+    }
+    printf("-1");
+    return 0;
+}
