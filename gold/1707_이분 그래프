@@ -1,0 +1,57 @@
+//https://www.acmicpc.net/problem/1707
+
+#include<stdio.h>
+#include<vector>
+#include<queue>
+#include<memory.h>
+using namespace std;
+
+int K;
+int V,E;
+vector<int> VI[20010];
+int color[20010];
+void bfs(){
+    for(int i=1;i<=V;i++){
+        if(color[i]!=0)continue;
+        queue<int> Q;
+        Q.push(i);
+        color[i] = 1;
+        while(!Q.empty()){
+            int nth = Q.front();
+            Q.pop();
+            for(int j=0;j<VI[nth].size();j++){
+                if(color[VI[nth][j]]!=0)continue;
+                Q.push(VI[nth][j]);
+                color[VI[nth][j]] = 3-color[nth];
+            }
+        }
+    }
+    return;
+}
+bool check(){
+    for(int i=1;i<=V;i++){
+        int targCol = color[i];
+        for(int j=0;j<VI[i].size();j++){
+            if(targCol==color[VI[i][j]]) return false;
+        }
+    }
+    return true;
+}
+int main(){
+    scanf("%d",&K);
+    while(K--){
+        for(int i=1;i<=V;i++)VI[i].clear();
+        //memset(VI,0,sizeof(VI));
+        memset(color,0,sizeof(color));
+        scanf("%d%d",&V,&E);
+        for(int i=0;i<E;i++){
+            int u,v;
+            scanf("%d%d",&u,&v);
+            VI[u].push_back(v);
+            VI[v].push_back(u);
+        }
+        bfs();
+        printf("%s\n",check()?"YES":"NO");
+    }
+    return 0;
+}
