@@ -1,0 +1,56 @@
+//https://www.acmicpc.net/problem/1753
+
+//힙을 활용한 솔루션. 백준 통과
+#include<stdio.h>
+#include<vector>
+#include<queue>
+#include<utility>
+#include<functional>
+using namespace std;
+typedef pair<int,int> pii;
+
+const int INF = 1'000'000'000;
+int V,E,K;
+vector<pii> VI[20010];
+int visited[20010];
+int result[20010];
+priority_queue<pii,vector<pii>,greater<pii>> PQ;
+
+void dijkstra(){
+    //initialize result array;
+    for(int i=1;i<=V;i++){
+        result[i] = INF;
+    }
+    result[K] = 0;
+    PQ.push({0,K});
+    
+    while(!PQ.empty()){
+        auto [costTillCur,cur] = PQ.top();
+        PQ.pop();
+        if(visited[cur])continue;
+        visited[cur]=1;
+        for(int i=0;i<VI[cur].size();i++){
+            auto [targ,costToTarg] = VI[cur][i];
+            if(visited[targ])continue;
+            if(costTillCur + costToTarg < result[targ]){
+                result[targ] = costTillCur + costToTarg;
+                PQ.push({result[targ],targ});
+            }
+        }
+    }
+}
+int main(){
+    scanf("%d%d%d",&V,&E,&K);
+    for(int i=0;i<E;i++){
+        int u,v,w;
+        scanf("%d%d%d",&u,&v,&w);
+        VI[u].push_back({v,w});
+    }
+    //dijkstra
+    dijkstra();
+    for(int i=1;i<=V;i++){
+        if(result[i] == INF) printf("INF\n");
+        else printf("%d\n",result[i]);
+    }
+    return 0;
+}
