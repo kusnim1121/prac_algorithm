@@ -1,0 +1,45 @@
+//https://www.acmicpc.net/problem/13549
+
+//다익스트라를 활용한 솔루션. BFS보다 더 빠르고 효율적이다.
+#include<stdio.h>
+#include<queue>
+#include<utility>
+#include<functional>
+using namespace std;
+
+typedef pair<int,int> pii;
+const int INF = 1'000'000'000;
+int dist[100010];
+int N,K;
+int withinBound(int x){
+    return x>=0 && x<=100000;
+}
+void dijkstra(){
+    for(int i=0;i<=100000;i++){
+        dist[i] = INF;
+    }
+    dist[N] = 0;
+    priority_queue<pii,vector<pii>,greater<pii>> PQ;
+    PQ.push({0,N});
+    while(!PQ.empty()){
+        auto [timeToCur,cur] = PQ.top();
+        PQ.pop();
+        //Optional condition. Works fine without it. A little faster.
+        if(cur==K) break;
+        for(int i=-1;i<=1;i++){
+            int next = cur + (i==0 ? cur : i);
+            if(!withinBound(next)) continue;
+            int totalTime = timeToCur + (i<0?-i:i);
+            if(totalTime < dist[next]){
+                dist[next] = totalTime;
+                PQ.push({totalTime,next});
+            }
+        }
+    }
+}
+int main(){
+    scanf("%d%d",&N,&K);
+    dijkstra();
+    printf("%d",dist[K]);
+    return 0;
+}
