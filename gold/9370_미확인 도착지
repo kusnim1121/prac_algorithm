@@ -1,0 +1,88 @@
+//https://www.acmicpc.net/problem/9370
+
+#include<stdio.h>
+#include<vector>
+#include<queue>
+#include<utility>
+#include<functional>
+#include<memory.h>
+#include<algorithm>
+using namespace std;
+
+typedef pair<int,int> pii;
+const int INF = 1'000'000'000;
+int T;
+vector<pii> V[2010];
+vector<int> CV;
+int distS[2010];
+int distG[2010];
+int distH[2010];
+void dijkstra(int start,int* dist,int N){
+    for(int i=1;i<=N;i++){
+        dist[i] = INF;
+    }
+    dist[start] = 0;
+    priority_queue<pii,vector<pii>,greater<pii>> PQ;
+    PQ.push({0,start});
+    while(!PQ.empty()){
+        auto [costToCur,cur] = PQ.top();
+        PQ.pop();
+        for(int i=0;i<V[cur].size();i++){
+            auto [next,costToNext] = V[cur][i];
+            int totalCost = costToCur + costToNext;
+            if(totalCost < dist[next]){
+                dist[next] = totalCost;
+                PQ.push({totalCost,next});
+            }
+        }
+    }
+}
+int main(){
+    scanf("%d",&T);
+    while(T--){
+        int n,m,t;
+        scanf("%d%d%d",&n,&m,&t);
+        int s,g,h;
+        scanf("%d%d%d",&s,&g,&h);
+        memset(V,0,sizeof(V));
+        CV.clear();
+        //get input
+        while(m--){
+            int a,b,d;
+            scanf("%d%d%d",&a,&b,&d);
+            V[a].push_back({b,d});
+            V[b].push_back({a,d});
+        }
+        //candidate nodes
+        while(t--){
+            int x;
+            scanf("%d",&x);
+            CV.push_back(x);
+        }
+        
+        //dijkstra
+        dijkstra(s,distS,n);
+        dijkstra(g,distG,n);
+        dijkstra(h,distH,n);
+
+        for(int i = CV.size()-1;i>=0;i--){
+            //checks if a path exists
+            bool path1 = distS[g]!=INF && distH[CV[i]] !=INF;
+            //checks if that path is the shortest path from start to end.
+            //That is, check if the path containing g-h is actually the shortest path
+            //if not, the path is not valid.
+            path1 = path1 && ((distS[g] + distG[h] + distH[CV[i]]) == distS[CV[i]]);
+            //check for h->g (above is g->h)
+            bool path2 = distS[h]!=INF && distG[CV[i]]!=INF;
+            path2 = path2 && ((distS[h] + distG[h] + distG[CV[i]]) == distS[CV[i]]);
+            //erase if not valid
+            if(!path1 && !path2) CV.erase(CV.begin()+i);
+        }
+        sort(CV.begin(),CV.end());
+        for(int i=0;i<CV.size();i++){
+            printf("%d ",CV[i]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
