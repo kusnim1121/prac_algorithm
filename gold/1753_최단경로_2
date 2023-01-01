@@ -1,0 +1,64 @@
+//https://www.acmicpc.net/problem/1753
+
+//선형 검색을 활용한 솔루션. 백준 시간초과
+#include<stdio.h>
+#include<vector>
+#include<utility>
+using namespace std;
+typedef pair<int,int> pii;
+
+const int INF = 1'000'000'000;
+int V,E,K;
+vector<pii> VI[20010];
+int visited[20010];
+int result[20010];
+
+int getMinIdx(){
+    int minIdx = -1;
+    int min = INF;
+    for(int i=1;i<=V;i++){
+        if(visited[i])continue;
+        if(result[i] < min){
+            min = result[i];
+            minIdx = i;
+        }
+    }
+    return minIdx;
+}
+void dijkstra(int cur){
+    visited[cur]=1;
+    for(int i=0;i<VI[cur].size();i++){
+        auto [targ,weight] = VI[cur][i];
+        if(visited[targ])continue;
+        if(result[cur] + weight < result[targ]){
+            result[targ] = result[cur] + weight;
+        }
+    }
+    int next = getMinIdx();
+    if(next == -1) return;
+    else dijkstra(next);
+}
+int main(){
+    scanf("%d%d%d",&V,&E,&K);
+    for(int i=0;i<E;i++){
+        int u,v,w;
+        scanf("%d%d%d",&u,&v,&w);
+        VI[u].push_back({v,w});
+    }
+    //initialize result array;
+    for(int i=1;i<=V;i++){
+        result[i] = INF;
+    }
+    result[K] = 0;
+    for(int i=0;i<VI[K].size();i++){
+        result[VI[K][i].first] = VI[K][i].second;
+    }
+    visited[K] = 1;
+    //recursive call. dijkstra
+    dijkstra(getMinIdx());
+    for(int i=1;i<=V;i++){
+        if(result[i] == INF) printf("INF\n");
+        else printf("%d\n",result[i]);
+    }
+    return 0;
+}
