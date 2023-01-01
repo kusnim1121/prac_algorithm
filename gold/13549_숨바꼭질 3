@@ -1,6 +1,6 @@
 //https://www.acmicpc.net/problem/13549
 
-//다익스트라를 활용한 솔루션. BFS보다 더 빠르고 효율적이다.
+//다익스트라를 활용한 솔루션. BFS로 풀고 싶을 경우 0-1 BFS로 0이면 큐의 맨 앞, 1이면 큐의 맨 뒤에 넣는 방법을 써야함.
 #include<stdio.h>
 #include<queue>
 #include<utility>
