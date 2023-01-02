@@ -1,0 +1,48 @@
+//https://www.acmicpc.net/problem/11404
+
+#include<stdio.h>
+#include<algorithm>
+using namespace std;
+
+const int INF = 1'000'000'000;
+int n,m;
+int dist[111][111];
+void floydWarshall(){
+    for(int x=1;x<=n;x++){
+        for(int i=1;i<=n;i++){
+            if(i==x) continue;
+            int costToX = dist[i][x];
+            if(costToX == INF)continue;
+            for(int j=1;j<=n;j++){
+                if(j==x) continue;
+                if(i==j) continue;
+                int costToJ = dist[x][j];
+                if(costToJ == INF) continue;
+                int totalCost = costToX + costToJ;
+                if(totalCost<dist[i][j])dist[i][j] = totalCost;
+            }
+        }
+    }
+    return;
+}
+int main(){
+    scanf("%d%d",&n,&m);
+    for(int i=1;i<=n;i++){
+        fill(dist[i],dist[i]+n+1,INF);
+        dist[i][i] = 0;
+    }
+    while(m--){
+        int a,b,c;
+        scanf("%d%d%d",&a,&b,&c);
+        dist[a][b]=c<dist[a][b]?c:dist[a][b];
+    }
+    floydWarshall();
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=n;j++){
+            if(dist[i][j]==INF)printf("0 ");
+            else printf("%d ",dist[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
