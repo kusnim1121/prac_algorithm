@@ -1,0 +1,62 @@
+//https://www.acmicpc.net/problem/11657
+
+#include<stdio.h>
+#include<utility>
+#include<vector>
+using namespace std;
+
+//<<start,end>,cost>
+typedef pair<pair<int,int>,int> ppi;
+typedef long long ll;
+const ll INF = 1'000'000'000'000'000;
+int N,M;
+vector<ppi> EV;
+ll dist[510];
+int bellmanFord(){
+    //initialize dist array
+    for(int i=1;i<=N;i++){
+        dist[i] = INF;
+    }
+    dist[1] = 0;
+    //for all edges in the graph, calculate (N-1) times and update if possible
+    for(int i=0;i<N-1;i++){
+        for(int j=0;j<EV.size();j++){
+            auto [positionPair,cost] = EV[j];
+            auto [start,end] = positionPair;
+            if(dist[start] == INF) continue;
+            ll totalDist = dist[start] + cost;
+            if(totalDist < dist[end]) dist[end] = totalDist;
+        }
+    }
+    //check for negative cycle
+    //if there is still any changes that can be made, it means there is a negative cycle
+    for(int i=0;i<EV.size();i++){
+        auto [positionPair,cost] = EV[i];
+        auto [start,end] = positionPair;
+        if(dist[start] == INF) continue;
+        ll totalDist = dist[start] + cost;
+        //return -1 if there is negative cycle
+        if(totalDist < dist[end]) return -1;
+    }
+    //return 0 if there is no negative cycle
+    return 0;
+}
+int main(){
+    scanf("%d%d",&N,&M);
+    for(int i=0;i<M;i++){
+        int a,b,c;
+        scanf("%d%d%d",&a,&b,&c);
+        EV.push_back({{a,b},c});
+    }
+    //print result
+    if(bellmanFord()==0){
+        for(int i=2;i<=N;i++){
+            if(dist[i]==INF){
+                printf("-1\n");
+            }else printf("%lld\n",dist[i]);
+        }
+    }else{
+        printf("-1\n");
+    }
+    return 0;
+}
