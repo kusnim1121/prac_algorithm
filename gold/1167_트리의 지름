@@ -1,0 +1,45 @@
+//https://www.acmicpc.net/problem/1167
+
+#include<stdio.h>
+#include<vector>
+#include<utility>
+#include<memory.h>
+using namespace std;
+typedef pair<int,int> pii;
+int V;
+vector<pii> VP[100010];
+int visited[100010];
+int maxLen,maxIdx;
+void solve(int node, int lengthSum){
+    if(visited[node]) return;
+    visited[node] = 1;
+    if(lengthSum>maxLen){
+        maxLen = lengthSum;
+        maxIdx = node;
+    }
+    for(int i=0;i<VP[node].size();i++){
+        auto [next,cost] = VP[node][i];
+        solve(next,lengthSum + cost);
+    }
+    return;
+}
+int main(){
+    scanf("%d",&V);
+    for(int i=1;i<=V;i++){
+        int u;
+        scanf("%d",&u);
+        while(true){
+            int v,w;
+            scanf("%d",&v);
+            if(v==-1)break;
+            scanf("%d",&w);
+            VP[u].push_back({v,w});
+        }
+    }
+    solve(1,0);
+    maxLen = 0;
+    memset(visited,0,sizeof(visited));
+    solve(maxIdx,0);
+    printf("%d",maxLen);
+    return 0;
+}
