@@ -1,0 +1,35 @@
+//https://www.acmicpc.net/problem/2263
+
+//Better Solution
+//전에는 post order을 역순으로 돌며 실제 트리를 구현한 후 pre order을 출력한 반면,
+//이번에는 pre order 순으로 순회하며 출력되게 post order과 inorder 배열을 분할하며 재귀 함수를 호출하였다.
+#include<stdio.h>
+
+const int MAX = 100010;
+int n;
+int in[MAX],post[MAX],inIdx[MAX];
+void traverse(int inStart,int inEnd, int postStart, int postEnd){
+    if(inStart > inEnd) return;
+    int root = post[postEnd];
+    int rootInIdx = inIdx[root];
+    int leftSize = rootInIdx - inStart;
+    int rightSize = inEnd - rootInIdx;
+    //root
+    printf("%d ",root);
+    //left child
+    traverse(inStart,inStart + leftSize -1, postStart, postStart + leftSize-1);
+    //right child
+    traverse(inEnd-rightSize+1, inEnd, postEnd - rightSize, postEnd-1);
+}
+int main(){
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        scanf("%d",&in[i]);
+        inIdx[in[i]] = i;
+    }
+    for(int i=0;i<n;i++){
+        scanf("%d",&post[i]);
+    }
+    traverse(0,n-1,0,n-1);
+    return 0;
+}
