@@ -1,0 +1,47 @@
+//https://www.acmicpc.net/problem/2263
+
+#include<stdio.h>
+#include<utility>
+using namespace std;
+typedef pair<int,int> pii;
+const int MAX = 100010;
+int n;
+int in[MAX], post[MAX], inIdx[MAX];
+pii tree[MAX];
+int root;
+int idx;
+void printPre(int node){
+    if(node == 0) return;
+    printf("%d ",node);
+    printPre(tree[node].first);
+    printPre(tree[node].second);
+}
+int fillTree(int start, int end){
+    if(idx<=0) return 0;
+    int curNode = post[idx];
+    int targIdx = inIdx[curNode];
+    if(targIdx <= start || targIdx >= end){
+        idx++;
+        return 0;
+    }
+    --idx;
+    tree[curNode].second = fillTree(targIdx, end);
+    --idx;
+    tree[curNode].first = fillTree(start, targIdx);
+    return curNode;
+}
+int main(){
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++){
+        scanf("%d",&in[i]);
+        inIdx[in[i]] = i;
+    }
+    for(int i=1;i<=n;i++){
+        scanf("%d",&post[i]);
+    }
+    root = post[n];
+    idx = n;
+    fillTree(0,n+1);
+    printPre(root);
+    return 0;
+}
