@@ -1,0 +1,41 @@
+//https://www.acmicpc.net/problem/1991
+
+#include<stdio.h>
+#include<vector>
+#include<utility>
+using namespace std;
+typedef pair<char,char> pcc;
+pcc PA[30];
+int N;
+void preOrder(char node){
+    if(node == '.') return;
+    printf("%c",node);
+    preOrder(PA[node-'A'].first);
+    preOrder(PA[node-'A'].second);
+}
+void inOrder(char node){
+    if(node == '.') return;
+    inOrder(PA[node-'A'].first);
+    printf("%c",node);
+    inOrder(PA[node-'A'].second);
+}
+void postOrder(char node){
+    if(node == '.') return;
+    postOrder(PA[node-'A'].first);
+    postOrder(PA[node-'A'].second);
+    printf("%c",node);
+}
+int main(){
+    scanf("%d",&N);
+    for(int i=0;i<N;i++){
+        char a,b,c;
+        scanf(" %c %c %c",&a,&b,&c);
+        PA[a-'A'] = {b,c};
+    }
+    preOrder('A');
+    printf("\n");
+    inOrder('A');
+    printf("\n");
+    postOrder('A');
+    return 0;
+}
