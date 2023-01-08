@@ -1,0 +1,30 @@
+//https://www.acmicpc.net/problem/5639
+
+#include<stdio.h>
+#include<algorithm>
+using namespace std;
+
+int pre[10010];
+//start and end index of tree (inclusive)
+void solve(int s,int e){
+    if(s>e) return;
+    int root = pre[s];
+    //able to use lower/upper bound as the part of array we are searching is sorted
+    int piv = upper_bound(&pre[s],&pre[e+1],root) - pre;
+    //left subtree
+    solve(s+1,piv-1);
+    //right subtree
+    solve(piv,e);
+    printf("%d\n",root);
+    return;
+}
+int main(){
+    int n;
+    int cnt = 0;
+    while(scanf("%d",&n)!=EOF){
+        pre[cnt] = n;
+        cnt++;
+    }
+    solve(0,cnt-1);
+    return 0;
+}
