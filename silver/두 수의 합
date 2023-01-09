@@ -1,0 +1,26 @@
+//https://www.acmicpc.net/problem/3273
+
+#include<stdio.h>
+#include<algorithm>
+using namespace std;
+
+int A[100010];
+int n,x;
+int main(){
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        scanf("%d",&A[i]);
+    }
+    scanf("%d",&x);
+    sort(A,A+n);
+    int a=0,b=n-1;
+    int cnt = 0;
+    while(a<b){
+        int sum = A[a] + A[b];
+        if(sum==x)cnt++;
+        if(sum<x)a++;
+        else b--;
+    }
+    printf("%d",cnt);
+    return 0;
+}
