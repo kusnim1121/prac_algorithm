@@ -1,0 +1,64 @@
+//https://www.acmicpc.net/problem/4803
+
+//처음에는 Floyd Warshall을 사용해 순환을 찾으려 했으나, 양방향 그래프에서 적용하기 힘들었다.
+#include<stdio.h>
+#include<vector>
+#include<memory.h>
+using namespace std;
+
+int n,m;
+vector<int> V[510];
+int visited[510];
+int dfs(int cur,int parent){
+    int ret = 1;
+    for(int i=0;i<V[cur].size();i++){
+        int next = V[cur][i];
+        //avoid moving directly back to parent node
+        if(next == parent) continue;
+        //if the next node is not the parent node, but is already visited, there is a cycle
+        if(visited[next]) return false;
+        visited[next] = 1;
+        //cannot return dfs(next,cur) right away, as there may be nodes with multiple edges going out of it.
+        ret &= dfs(next,cur);
+    }
+    return ret;
+}
+int solve(){
+    int ret = 0;
+    for(int i=1;i<=n;i++){
+        if(!visited[i]){
+            visited[i] = 1;
+            if(dfs(i,i)){
+                ret++;
+            }
+        }
+    }
+    return ret;
+}
+int main(){
+    int tc = 0;
+    while(true){
+        scanf("%d%d",&n,&m);
+        if(n==0&&m==0)break;
+        for(int i=1;i<=n;i++)V[i].clear();
+        memset(visited,0,sizeof(visited));
+        tc++;
+        while(m--){
+            int u,v;
+            scanf("%d%d",&u,&v);
+            V[u].push_back(v);
+            V[v].push_back(u);
+        }
+        int ret = solve();
+        printf("Case %d: ",tc);
+        if(ret == 0){
+            printf("No trees.");
+        }else if(ret == 1){
+            printf("There is one tree.");
+        }else{
+            printf("A forest of %d trees.",ret);
+        }
+        printf("\n");
+    }
+    return 0;
+}
