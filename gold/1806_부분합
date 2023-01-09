@@ -1,0 +1,29 @@
+//https://www.acmicpc.net/problem/1806
+
+#include<stdio.h>
+
+int N,S;
+int A[100010];
+int main(){
+    scanf("%d%d",&N,&S);
+    for(int i=0;i<N;i++){
+        scanf("%d",&A[i]);
+    }
+    int *a = &A[0];
+    int *b = &A[0];
+    int sum = *a;
+    int ans = 100001;
+    while(true){
+        if(b > &A[N-1])break;
+        if(sum>=S){
+            if(b-a+1 < ans) ans = b-a+1;
+            sum-=*a;
+            a++;
+        }else{
+            b++;
+            sum+=*b;
+        }
+    }
+    printf("%d",ans>100000?0:ans);
+    return 0;
+}
