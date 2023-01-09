@@ -1,0 +1,24 @@
+//https://www.acmicpc.net/problem/3273
+
+//O(n) solution of the Two Sum problem using hashmap instead of two pointer
+#include<stdio.h>
+
+int A[100010];
+int exist[100010];
+int n,x;
+int main(){
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        scanf("%d",&A[i]);
+    }
+    scanf("%d",&x);
+    int cnt = 0;
+    for(int i=0;i<n;i++){
+        int num = x-A[i];
+        if(num<=0 || num>=100000) continue;
+        if(exist[num]) cnt++;
+        else exist[A[i]] = 1;
+    }
+    printf("%d",cnt);
+    return 0;
+}
