@@ -1,0 +1,52 @@
+//https://www.acmicpc.net/problem/1644
+
+#include<stdio.h>
+#include<vector>
+using namespace std;
+
+int N;
+vector<int> V;
+//use sieve of eratosthenes to get vector of available prime numbers
+void findPrimeList(){
+    int notPrime[4000010] = {1,1,0,};
+    for(long long i=2;i*i<=N;i++){
+        if(notPrime[i])continue;
+        int tmp = i*2;
+        while(tmp<=N){
+            notPrime[tmp] = 1;
+            tmp+=i;
+        }
+    }
+    for(int i=1;i<=N;i++){
+        if(notPrime[i]==0){
+            V.push_back(i);
+        }
+    }
+    
+}
+int main(){
+    scanf("%d",&N);
+    findPrimeList();
+    int len = V.size();
+    int a=0,b=0;
+    int sum = 2;
+    int cnt = 0;
+    while(true){
+        if(b>=len)break;
+        if(sum==N){
+            cnt++;
+            sum-=V[a];
+            a++;
+            b++;
+            sum+=V[b];
+        }else if(sum<N){
+            b++;
+            sum+=V[b];
+        }else{
+            sum-=V[a];
+            a++;
+        }
+    }
+    printf("%d",cnt);
+    return 0;
+}
