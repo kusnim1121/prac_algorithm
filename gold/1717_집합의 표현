@@ -1,0 +1,52 @@
+//https://www.acmicpc.net/problem/1717
+
+#include<stdio.h>
+
+int n,m;
+int parent[1000010];
+int getParent(int a){
+    return parent[a] = (parent[a]==a?a:getParent(parent[a]));
+}
+void join(int a,int b){
+    //if(a==b) return;
+    //int tmp;
+    //if(parent[a]<parent[b]){
+    //    tmp = parent[b];
+    //    parent[b] = parent[a];
+    //}else{
+    //    tmp = parent[a];
+    //    parent[a] = parent[b];
+    //}
+    //join(b,tmp);
+    a = getParent(a);
+    b = getParent(b);
+    if(a<b)parent[b] = a;
+    else parent[a] = b;
+}
+int find(int a,int b){
+    int x = getParent(a);
+    int y = getParent(b);
+    return x==y;
+}
+void printParent(){
+    for(int i=0;i<=n;i++){
+        printf("%d: %d\n",i,parent[i]);
+    }
+}
+int main(){
+    scanf("%d%d",&n,&m);
+    for(int i=0;i<=n;i++){
+        parent[i] = i;
+    }
+    while(m--){
+        int x,a,b;
+        scanf("%d%d%d",&x,&a,&b);
+        if(x==0){
+            join(a,b);
+        }else if(x==1){
+            printf("%s\n",find(a,b)?"YES":"NO");
+        }
+    }
+    //printParent();
+    return 0;
+}
