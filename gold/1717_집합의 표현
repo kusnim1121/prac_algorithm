@@ -28,11 +28,6 @@ int find(int a,int b){
     int y = getParent(b);
     return x==y;
 }
-void printParent(){
-    for(int i=0;i<=n;i++){
-        printf("%d: %d\n",i,parent[i]);
-    }
-}
 int main(){
     scanf("%d%d",&n,&m);
     for(int i=0;i<=n;i++){
@@ -47,6 +42,5 @@ int main(){
             printf("%s\n",find(a,b)?"YES":"NO");
         }
     }
-    //printParent();
     return 0;
 }
