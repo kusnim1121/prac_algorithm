@@ -1,0 +1,63 @@
+//
+
+//The problem is not finding the maximum network size, but finding the network size between the two inputs.
+#include<iostream>
+#include<string>
+#include<unordered_map>
+using namespace std;
+int T;
+int F;
+int parent[200010];
+int setSize[200010];
+unordered_map<string,int> UM;
+int uniqueInputCnt = 0;
+int getParent(int x){
+    if(parent[x] == x) return x;
+    return parent[x] = getParent(parent[x]);
+}
+void join(int a,int b){
+    a = getParent(a);
+    b = getParent(b);
+    if(a<b){
+        parent[b] = a;
+        setSize[a]+= setSize[b];
+    }else if(a>b){
+        parent[a] = b;
+        setSize[b] += setSize[a];
+    }
+}
+int handleInput(string s){
+    auto it = UM.find(s);
+    //if key with input does not exist
+    if(it==UM.end()){
+        UM[s] = uniqueInputCnt++;
+        return uniqueInputCnt-1;
+    }else{
+        return it->second;
+    }
+}
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    cin>>T;
+    while(T--){
+        cin>>F;
+        //set initial state for test case
+        uniqueInputCnt = 0;
+        UM.clear();
+        for(int i=0;i<=2*F;i++){
+            parent[i] = i;
+            setSize[i] = 1;
+        }
+        for(int i=0;i<F;i++){
+            string s1,s2;
+            cin>>s1>>s2;
+            int a = handleInput(s1);
+            int b = handleInput(s2);
+            join(a,b);
+            cout<< setSize[getParent(a)] <<"\n";
+        }
+    }
+    return 0;
+}
