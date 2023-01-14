@@ -1,0 +1,64 @@
+//https://www.acmicpc.net/problem/4386
+
+//Kruskal's algorithm
+#include<stdio.h>
+#include<algorithm>
+#include<math.h>
+#include<utility>
+#include<tuple>
+using namespace std;
+
+typedef tuple<float,int,int> tiii;
+int n;
+pair<float,float> pos[110];
+tiii dist[10010];
+int parent[110];
+int getParent(int x){
+    if(parent[x] == x)return x;
+    return parent[x] = getParent(parent[x]);
+}
+int join(int a,int b){
+    a = getParent(a);
+    b = getParent(b);
+    if(a<b)parent[b]=a;
+    else if(a>b)parent[a]=b;
+    else return 0;
+    return 1;
+}
+int main(){
+    int idx = 0;
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        scanf("%f%f",&pos[i].first,&pos[i].second);
+    }
+    //calculate all possible routes and respective cost
+    for(int i=0;i<n;i++){
+        float x1 = pos[i].first;
+        float y1 = pos[i].second;
+        for(int j=0;j<n;j++){
+            if(i==j) continue;
+            float x2 = pos[j].first;
+            float y2 = pos[j].second;
+            //auto [x2,y2] = pos[j];
+            float cost = sqrtf(pow((y2-y1),2) + pow((x2-x1),2));
+            dist[idx++] = make_tuple(cost,i,j);
+        }
+    }
+    //kruskal's algorithm
+    for(int i=0;i<n;i++){
+        parent[i] = i;
+    }
+    sort(dist,dist+idx);
+    float ans = 0;
+    int cnt = 0;
+    for(int i=0;i<idx;i++){
+        auto [cost,from,to] = dist[i];
+        if(join(from,to)){
+            cnt++;
+            ans+=cost;
+        }
+        if(cnt == (n-1)) break;
+    }
+    printf("%.2f",ans);
+    return 0;
+}
