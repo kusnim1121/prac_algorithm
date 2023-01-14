@@ -1,0 +1,40 @@
+//https://www.acmicpc.net/problem/1197
+
+#include<stdio.h>
+#include<queue>
+#include<utility>
+#include<functional>
+using namespace std;
+
+typedef pair<int,int> pii;
+priority_queue<pii,vector<pii>,greater<pii>> PQ;
+vector<pii> VP[10010];
+int V,E;
+int visited[10010];
+int totalCost = 0;
+void prim(int start){
+    PQ.push({0,start});
+    while(!PQ.empty()){
+        auto [cost, to] = PQ.top();
+        PQ.pop();
+        if(visited[to]) continue;
+        visited[to] = 1;
+        totalCost += cost;
+        for(int i=0;i<VP[to].size();i++){
+            auto [next,weight] = VP[to][i];
+            if(!visited[next]) PQ.push({weight,next});
+        }
+    }
+}
+int main(){
+    scanf("%d%d",&V,&E);
+    while(E--){
+        int a,b,c;
+        scanf("%d%d%d",&a,&b,&c);
+        VP[a].push_back({b,c});
+        VP[b].push_back({a,c});
+    }
+    prim(1);
+    printf("%d",totalCost);
+    return 0;
+}
