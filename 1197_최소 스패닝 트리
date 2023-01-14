@@ -1,0 +1,53 @@
+//https://www.acmicpc.net/problem/1197
+
+#include<stdio.h>
+#include<algorithm>
+#include<vector>
+#include<tuple>
+using namespace std;
+
+typedef tuple<int,int,int> tiii;
+vector<tiii> VT;
+int V,E;
+int parent[10010];
+int getParent(int x){
+    if(parent[x] == x)return x;
+    return parent[x] = getParent(parent[x]);
+}
+int join(int a,int b){
+    a = getParent(a);
+    b = getParent(b);
+    if(a>b) parent[b] = a;
+    else if(a<b) parent[a] = b;
+    else return 0;
+    return 1;
+}
+int main(){
+    scanf("%d%d",&V,&E);
+    for(int i=1;i<=V;i++){
+        parent[i] = i;
+    }
+    while(E--){
+        int a,b,c;
+        scanf("%d%d%d",&a,&b,&c);
+        VT.push_back({c,a,b});
+    }
+    //sort in increasing order of weight of edges
+    sort(VT.begin(),VT.end());
+    int cnt = 0;
+    int sum = 0;
+    for(int i=0;i<VT.size();i++){
+        auto [c,a,b] = VT[i];
+        //if it is not a cycle, add cost to sum
+        if(join(a,b)){
+            cnt++;
+            sum+=c;
+        }
+        //if the number of edges reaches Nodes-1, end
+        if(cnt == V-1){
+            break;
+        }
+    }
+    printf("%d",sum);
+    return 0;
+}
