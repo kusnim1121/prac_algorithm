@@ -1,0 +1,68 @@
+//https://www.acmicpc.net/problem/1774
+
+//Kruskal's algorithm.
+//다만, 간선이 많은 경우 프림이 더 효율적이다. 이 문제는 프림이 더 적합해보인다.
+//Prim: O(ElogV) vs Kruskal: O(ElogE)
+#include<stdio.h>
+#include<math.h>
+#include<algorithm>
+#include<tuple>
+#include<utility>
+#include<vector>
+using namespace std;
+typedef long long ll;
+typedef pair<ll,ll> pll;
+int N,M;
+int parent[1010];
+pll pos[1010];
+vector<tuple<double,int,int>> VT;
+int getParent(int x){
+    if(parent[x] == x) return x;
+    return parent[x] = getParent(parent[x]);
+}
+int join(int a,int b){
+    a = getParent(a);
+    b = getParent(b);
+    if(a<b)parent[b] = a;
+    else if(a>b) parent[a] = b;
+    else return 0;
+    return 1;
+}
+double dist(pll pos1, pll pos2){
+    return sqrt(pow(pos2.second - pos1.second,2) + pow(pos2.first - pos1.first,2));
+}
+int main(){
+    scanf("%d%d",&N,&M);
+    //input
+    for(int i=1;i<=N;i++){
+        parent[i] = i;
+        scanf("%d%d",&pos[i].first,&pos[i].second);
+    }
+    for(int k=0;k<M;k++){
+        int i,j;
+        scanf("%d%d",&i,&j);
+        join(i,j);
+    }
+    //calculate distance
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=N;j++){
+            if(i==j) continue;
+            VT.push_back({dist(pos[i],pos[j]),i,j});
+        }
+    }
+    //Kruskal's algorithm
+    int cnt = M;
+    double ans = 0;
+    sort(VT.begin(),VT.end());
+    for(int k=0;k<VT.size();k++){
+        auto [cost,i,j] = VT[k];
+        if(join(i,j)){
+            cnt++;
+            ans+=cost;
+        }
+        if(cnt == N-1) break;
+    }
+    //need rounding
+    printf("%.2f",ans);
+    return 0;
+}
