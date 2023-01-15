@@ -1,0 +1,58 @@
+//https://www.acmicpc.net/problem/6497
+
+//이 문제의 경우, 간선이 개수가 많지 않기 때문에 크루스칼 알고리즘이 더 효율적이다.
+#include<stdio.h>
+#include<queue>
+#include<vector>
+#include<utility>
+using namespace std;
+
+typedef pair<int,int> pii;
+int m,n;
+int cost;
+vector<pii> VP[200010];
+int visited[200010];
+void prim(int start){
+    priority_queue<pii,vector<pii>,greater<pii>> PQ;
+    PQ.push({0, start});
+    int cnt = -1;
+    while(!PQ.empty()){
+        auto [weight, to] = PQ.top();
+        PQ.pop();
+        if(visited[to])continue;
+        visited[to] = 1;
+        cnt++;
+        cost+= weight;
+        if(cnt==m-1)break;
+        for(int i=0;i<VP[to].size();i++){
+            auto [next, weight] = VP[to][i];
+            if(visited[next]) continue;
+            PQ.push({weight, next});
+        }
+    }
+}
+int main(){
+    while(true){
+        scanf("%d%d",&m,&n);
+        if(m==0 && n==0) break;
+        //initialize
+        for(int i=0;i<m;i++){
+            VP[i].clear();
+            visited[i] = 0;
+        }
+        cost = 0;
+        int sum = 0;
+        //input
+        for(int i=0;i<n;i++){
+            int x,y,z;
+            scanf("%d%d%d",&x,&y,&z);
+            VP[x].push_back({y,z});
+            VP[y].push_back({x,z});
+            sum+=z;
+        }
+        //prim's algorithm
+        prim(0);
+        printf("%d\n",sum-cost);
+    }
+    return 0;
+}
