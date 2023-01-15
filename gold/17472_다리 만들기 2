@@ -1,0 +1,134 @@
+//https://www.acmicpc.net/problem/17472
+
+#include<stdio.h>
+#include<vector>
+#include<tuple>
+#include<algorithm>
+using namespace std;
+typedef tuple<int,int,int> tiii;
+
+int N,M;
+int A[11][11];
+int islandCnt = 0;
+int ans;
+vector<tiii> VT;
+int dx[] = {1,-1,0,0};
+int dy[] = {0,0,1,-1};
+int visited[11][11] = {0,};
+int parent[11];
+int getParent(int x){
+    if(parent[x] == x) return x;
+    return parent[x] = getParent(parent[x]);
+}
+int join(int a,int b){
+    a = getParent(a);
+    b = getParent(b);
+    if(a<b) parent[b] = a;
+    else if(a>b) parent[a] = b;
+    else return 0;
+    return 1;
+}
+void kruskal(){
+    sort(VT.begin(),VT.end());
+    int cnt = 0;
+    for(int i=1;i<=N;i++){
+        parent[i] = i;
+    }
+    for(int i=0;i<VT.size();i++){
+        auto [cost, from, to] = VT[i];
+        if(join(from,to)){
+            ans+=cost;
+            cnt++;
+        }
+        if(cnt == islandCnt-1) return;
+    }
+    ans = -1;
+}
+void findPossiblePath(){
+    //horizontal
+    for(int i=0;i<N;i++){
+        int start = 0;
+        int before = 0;
+        int cnt = 0;
+        for(int j=0;j<M;j++){
+            if(A[i][j] != before){
+                if(before == 0){
+                    if(start!=0 && cnt>=2){
+                        VT.push_back({cnt,start,A[i][j]});
+                    }
+                    cnt = 0;
+                    start = A[i][j];
+                }else{
+                    cnt++;
+                }
+            }else{
+                if(before == 0 && start !=0) cnt++;
+            }
+            before = A[i][j];
+        }
+    }
+    //vertical
+    for(int j=0;j<M;j++){
+        int start = 0;
+        int before = 0;
+        int cnt = 0;
+        for(int i=0;i<N;i++){
+            if(A[i][j] != before){
+                if(before == 0){
+                    if(start!=0 && cnt>=2){
+                        VT.push_back({cnt,start,A[i][j]});
+                    }
+                    cnt = 0;
+                    start = A[i][j];
+                }else{
+                    cnt++;
+                }
+            }else{
+                if(before == 0 && start != 0) cnt++;
+            }
+            before = A[i][j];
+        }
+    }
+}
+int isInBoard(int i,int j){
+    return i>=0&&i<N && j>=0 &&j<M;
+}
+void dfs(int i,int j){
+    visited[i][j] = 1;
+    if(A[i][j]==0) return;
+    A[i][j] = islandCnt;
+    for(int x=0;x<4;x++){
+        int py = i+dy[x];
+        int px = j+dx[x];
+        if(isInBoard(py,px)){
+            if(!visited[py][px]){
+                dfs(py,px);
+            }
+        }
+    }
+}
+void findIsland(){
+    for(int i=0;i<N;i++){
+        for(int j=0;j<M;j++){
+            if(visited[i][j])continue;
+            visited[i][j] = 1;
+            if(A[i][j] == 1){
+                islandCnt++;
+                dfs(i,j);
+            }
+        }
+    }
+}
+int main(){
+    scanf("%d%d",&N,&M);
+    for(int i=0;i<N;i++){
+        for(int j=0;j<M;j++){
+            scanf(" %d",&A[i][j]);
+        }
+    }
+    findIsland();
+    findPossiblePath();
+    kruskal();
+    printf("%d",ans);
+    return 0;
+}
