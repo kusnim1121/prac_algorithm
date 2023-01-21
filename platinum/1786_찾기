@@ -1,0 +1,52 @@
+//https://www.acmicpc.net/problem/1786
+
+#include<iostream>
+#include<string.h>
+using namespace std;
+
+char T[1000010],P[1000010];
+int fail[1000010];
+int ans[1000010];
+int cnt;
+int n,m;
+void failure(){
+    for(int i=1,j=0;i<m;i++){
+        //search if there is appropriate value.
+        //if not, start again from 0 idx
+        while(j>0 && P[i]!=P[j])j=fail[j-1];
+        //if idx is 0 and matches, move one to right
+        //or, if there is a match, move one to right
+        if(P[i]==P[j]) j++;
+        fail[i] = j;
+    }
+}
+void kmp(){
+    for(int i=0,j=0;i<n;i++){
+        //find appropriate failure value
+        while(j>0 && T[i]!=P[j]) j = fail[j-1];
+        //if the above while ended with j==0, check if matches
+        //else, increment j
+        if(T[i]==P[j])j++;
+        //if an answer is found, record
+        //you do not reset j here, as there might be a new match starting in between
+        //i-m+2 and i. j will be set accordingly in the upcoming while loop.
+        if(j==m){
+            ans[cnt] = i-m+2;
+            cnt++;
+        }
+    }
+}
+int main(){
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+    cin.getline(T,1000010);
+    cin.getline(P,1000010);
+    n = strlen(T);
+    m = strlen(P);
+    failure();
+    kmp();
+    cout<<cnt<<"\n";
+    for(int i=0;i<cnt;i++){
+        cout<<ans[i]<<"\n";
+    }
+    return 0;
+}
