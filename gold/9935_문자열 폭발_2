@@ -1,0 +1,72 @@
+//https://www.acmicpc.net/problem/9935
+
+//라빈 카프 알고리즘. 시간 초과 뜸.
+#include<iostream>
+#include<string>
+#include<stack>
+using namespace std;
+
+string T,P;
+int patternSize,textSize;
+int main(){
+    getline(cin,T);
+    getline(cin,P);
+    textSize = T.size();
+    patternSize = P.size();
+    int patternHash = 0,textHash;
+    int power = 1;
+    int matchCnt = 0;
+    //find hash of pattern
+    for(int i=patternSize-1;i>=0;i--){
+        patternHash += P[i] * power;
+        power*=2;
+    }
+    //printf("pattern: %d\n",patternHash);
+    do{
+        stack<int> S;
+        matchCnt = 0;
+        //rabin-karp
+        textSize = T.size();
+        power = 1;
+        textHash = 0;
+        for(int i=0;i<=(textSize-patternSize);i++){
+            //calculate text hash
+            if(i==0){
+                for(int j=patternSize-1;j>=0;j--){
+                    textHash += T[j] * power;
+                    power*=2;
+                }
+                power/=2;
+            }else{
+                textHash -= (T[i-1]*power);
+                textHash*=2;
+                textHash += T[i+patternSize-1];
+            }
+            //printf("text: %d, %d\n",i,textHash);
+            //check if hash match
+            if(textHash == patternHash){
+                //printf("match!: %d\n",i);
+                bool isFound = true;
+                for(int j=0;j<patternSize;j++){
+                    if(T[i+j]!=P[j]){
+                        isFound = false;
+                        break;
+                    }
+                }
+                if(!isFound) continue;
+                S.push(i);
+                matchCnt++;
+            }
+        }
+        //erase pattern
+        while(!S.empty()){
+            int x = S.top();
+            S.pop();
+            T.erase(x,patternSize);
+        }
+        //end loop if there was no more pattern in text
+    }while(matchCnt!=0);
+    
+    cout<<(T.size()==0?"FRULA":T);
+    return 0;
+}
