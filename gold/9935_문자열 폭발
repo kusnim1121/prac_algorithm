@@ -1,0 +1,43 @@
+//https://www.acmicpc.net/problem/9935
+
+#include<iostream>
+#include<vector>
+#include<string.h>
+using namespace std;
+
+char T[1000010],P[40];
+int n,m;
+vector<char> CV;
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    cin.getline(T,1000010);
+    cin.getline(P,40);
+    n=strlen(T);
+    m=strlen(P);
+    for(int i=0;i<n;i++){
+        CV.push_back(T[i]);
+        if(CV.size()<m) continue;
+        //if the target char in text match last char of pattern
+        //this means there is possibility of a match
+        if(T[i]==P[m-1]){
+            int flag = 1;
+            for(int i=0;i<m;i++){
+                if(!(P[m-i-1] == CV[CV.size()-i-1])){
+                    flag = 0;
+                    break;
+                }
+            }
+            //if it is a match, erase from vector
+            if(flag){
+                CV.erase(CV.end()-m,CV.end());
+            }
+        }
+    }
+    if(CV.size()==0) cout<<"FRULA";
+    else{
+        for(char c : CV) cout<<c;
+    }
+    return 0;
+}
