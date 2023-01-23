@@ -1,0 +1,86 @@
+//https://www.acmicpc.net/problem/5670
+
+#include<stdio.h>
+#include<map>
+using namespace std;
+
+//이 방법은 메모리 초과가 떴다. 
+//search 할때 children을 일일이 순회하는 것이 아닌, input을 저장해둔 뒤, 순회할 때에도 활용하면 되는듯 하다.
+//int ctoi(char c){return c-'a';}
+//char itoc(int i){return i+'a';}
+/*struct Trie{
+    Trie* children[26];
+    bool isEnd = false;
+    int childrenCnt = 0;
+    void insert(const char* s){
+        if(*s==NULL){
+            isEnd = true;
+            return;
+        }
+        int idx = ctoi(*s);
+        if(children[idx]==NULL){
+            children[idx] = new Trie();
+            //increment children count if a new children has to be made
+            childrenCnt++;
+        }
+        children[idx]->insert(s+1);
+    }
+    int search(int cnt){
+        int sum = 0;
+        for(int i=0;i<26;i++){
+            if(children[i]!=NULL){
+                int nextCnt = cnt;
+                if(children[i]->isEnd) {
+                    sum+=cnt;
+                    nextCnt++;
+                }else if(children[i]->childrenCnt!=1) nextCnt++;
+                //add to count for next letter if:
+                //i) it is the end of a word. This means you need to press another letter in order to differentiate the word
+                //ii) the number of children letters is larger than 1.
+                sum+=children[i]->search(nextCnt);
+            }
+        }
+        return sum;
+    }
+};*/
+struct Trie{
+    map<char,Trie*> children;
+    bool isEnd = false;
+    bool isRoot = false;
+    Trie(bool isRoot):isRoot(isRoot){}
+    Trie(){};
+    void insert(const char* s){
+        if(*s==NULL){
+            isEnd = true;
+            return;
+        }
+        if(children.find(s[0])==children.end()){
+            children[s[0]] = new Trie();
+        }
+        children[s[0]]->insert(s+1);
+    }
+    int search(int cnt){
+        int sum = 0;
+        if(isEnd) sum+=cnt;
+        if(children.size()!=1 || isEnd){
+            if(!isRoot)cnt++;
+        }
+        for(auto it = children.begin();it!=children.end();it++){
+            sum+=it->second->search(cnt);
+        }
+        return sum;
+    }
+};
+int N;
+char input[81];
+int main(){
+    while(scanf("%d",&N)!=-1){
+        Trie* root = new Trie(true);
+        for(int i=0;i<N;i++){
+            scanf(" %s",&input);
+            root->insert(input);
+        }
+        printf("%.2f\n",root->search(1)/(float)N);
+    }
+    return 0;
+}
