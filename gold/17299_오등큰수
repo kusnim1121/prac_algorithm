@@ -1,0 +1,31 @@
+//https://www.acmicpc.net/problem/17299
+
+#include<stdio.h>
+#include<stack>
+#include<utility>
+using namespace std;
+typedef pair<int,int> pii;
+
+int N;
+int cnt[1000010];
+pii A[1000010];
+int ans[1000010];
+stack<pii> S;
+int main(){
+    scanf("%d",&N);
+    for(int i=0;i<N;i++){
+        scanf("%d",&A[i].first);
+        cnt[A[i].first]++;
+    }
+    for(int i=0;i<N;i++){
+        A[i].second = cnt[A[i].first];
+    }
+    for(int i=N-1;i>=0;i--){
+        pii x = A[i];
+        while(!S.empty() && x.second >= S.top().second) S.pop();
+        ans[i] = S.empty() ? -1: S.top().first;
+        S.push(x);
+    }
+    for(int i=0;i<N;i++)printf("%d ",ans[i]);
+    return 0;
+}
