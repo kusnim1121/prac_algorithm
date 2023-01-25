@@ -1,0 +1,69 @@
+//https://www.acmicpc.net/problem/1535
+
+#include<stdio.h>
+
+int N;
+int L[21];
+int J[21];
+int dp[21][100];
+int ans;
+int max(int a,int b){return a>b?a:b;}
+int main(){
+    scanf("%d",&N);
+    for(int i=1;i<=N;i++)scanf("%d",&L[i]);
+    for(int i=1;i<=N;i++)scanf("%d",&J[i]);
+    for(int i=1;i<=N;i++){
+        /*
+        j만큼 체력을 사용 했을 때 얻을 수 있는 가장 큰 기쁨
+        for(int j=99;j>=0;j--){
+            dp[i][j] = dp[i-1][j];
+            if(j+L[i]<100){
+                dp[i][j+L[i]] = max(dp[i][j+L[i]],dp[i][j] + J[i]);
+                ans = max(ans,dp[i][j+L[i]]);
+            }
+        }
+        */
+        
+        //L[i]만큼 체력 사용 후, j만큼 체력이 남을 때, 얻을 수 있는 가장 큰 기쁨
+        for(int j=0;j<100;j++){
+            dp[i][j] = dp[i-1][j];
+            if(j+L[i]<100){
+                dp[i][j] = max(dp[i][j],dp[i-1][j+L[i]] + J[i]);
+            }
+            ans = max(dp[i][j],ans);
+        }
+    }
+    printf("%d",ans);
+    return 0;
+}
+
+//dfs 풀이
+/*
+#include<stdio.h>
+
+int N;
+int L[21];
+int J[21];
+int max;
+void dfs(int nth,int health, int joy){
+    if(health<=0) return;
+    if(nth==N){
+        if(joy > max) max = joy;
+        return;
+    }
+    dfs(nth+1,health-L[nth],joy+J[nth]);
+    dfs(nth+1,health,joy);
+}
+int main(){
+    scanf("%d",&N);
+    for(int i=0;i<N;i++){
+        scanf("%d",&L[i]);
+    }
+    for(int i=0;i<N;i++){
+        scanf("%d",&J[i]);
+    }
+    dfs(0,100,0);
+    printf("%d",max);
+    return 0;
+}
+/*
