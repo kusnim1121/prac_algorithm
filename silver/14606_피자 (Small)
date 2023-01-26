@@ -1,0 +1,66 @@
+//https://www.acmicpc.net/problem/14606
+
+//bottom-up solution
+#include<stdio.h>
+
+int N;
+int dp[11];
+int main(){
+    scanf("%d",&N);
+    for(int i=1;i<=N;i++){
+        int a = i/2;
+        int b = i-a;
+        dp[i] = a*b + dp[a] + dp[b];
+    }
+    printf("%d",dp[N]);
+    return 0;
+}
+
+//top-down solution
+/*
+#include<stdio.h>
+
+int N;
+int dp[11];
+int solve(int n){
+    int& ret = dp[n];
+    if(ret>0)return ret;
+    if(n == 1 || n ==2){
+        return n-1;
+    }
+    int a = n/2;
+    int b = n-a;
+    return ret = a*b + solve(a) + solve(b);
+}
+int main(){
+    scanf("%d",&N);
+    printf("%d",solve(N));
+    return 0;
+}
+*/
+
+//priority_queue solution
+/*
+#include<stdio.h>
+#include<queue>
+using namespace std;
+
+int N;
+priority_queue<int> PQ;
+int main(){
+    scanf("%d",&N);
+    if(N!=1) PQ.push(N);
+    int ans = 0;
+    while(!PQ.empty()){
+        int top = PQ.top();
+        PQ.pop();
+        int a = top/2;
+        int b = top-a;
+        ans+=a*b;
+        if(a>1)PQ.push(a);
+        if(b>1)PQ.push(b);
+    }
+    printf("%d",ans);
+    return 0;
+}
+*/
