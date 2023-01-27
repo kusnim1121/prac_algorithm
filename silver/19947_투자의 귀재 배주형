@@ -1,0 +1,48 @@
+//https://www.acmicpc.net/problem/19947
+
+//bottom-up solution
+#include<stdio.h>
+
+int H,Y;
+int dp[11];
+int max(int a,int b){return a>b?a:b;}
+int main(){
+    scanf("%d%d",&dp[0],&Y);
+    for(int i=1;i<=Y;i++){
+        dp[i] = (int)(dp[i-1] * 1.05);
+        if(i>=3){
+            dp[i] = max(dp[i],dp[i-3]*1.2);
+        }
+        if(i>=5){
+            dp[i] = max(dp[i],dp[i-5]*1.35);
+        }
+    }
+    printf("%d",dp[Y]);
+    return 0;
+}
+
+//top-down solution
+/*
+#include<stdio.h>
+
+int H,Y;
+int max(int a,int b){return a>b?a:b;}
+int dp[11];
+int solve(int m,int y){
+    int& ret = dp[y];
+    //if(ret>0)return ret;
+    if(y<0)return -1;
+    if(y==0){
+        return m;
+    }
+    ret = max(ret,solve(m*1.35,y-5));
+    ret = max(ret,solve(m*1.2,y-3));
+    ret = max(ret,solve(m*1.05,y-1));
+    return ret;
+}
+int main(){
+    scanf("%d%d",&H,&Y);
+    printf("%d",solve(H,Y));
+    return 0;
+}
+*/
