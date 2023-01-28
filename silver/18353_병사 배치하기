@@ -1,0 +1,55 @@
+//https://www.acmicpc.net/problem/18353
+
+//O(N^2) solution
+#include<stdio.h>
+
+int N;
+int A[2222];
+int dp[2222];
+int max(int a,int b){return a>b?a:b;}
+int main(){
+    scanf("%d",&N);
+    for(int i=1;i<=N;i++){
+        scanf("%d",&A[i]);
+    }
+    int cnt = 0;
+    for(int i=1;i<=N;i++){
+        dp[i] = 1;
+        for(int j=i-1;j>=1;j--){
+            if(A[j]>A[i]){
+                dp[i] = max(dp[i],dp[j] + 1);
+            }
+        }
+        if(dp[i]>cnt)cnt = dp[i];
+    }
+    printf("%d",N-cnt);
+    return 0;
+}
+
+//O(NlogN) solution using lower_bound
+/*
+#include<stdio.h>
+#include<algorithm>
+using namespace std;
+
+int N;
+int A[2222];
+int dp[2222];
+int max(int a,int b){return a>b?a:b;}
+int main(){
+    scanf("%d",&N);
+    for(int i=1;i<=N;i++){
+        scanf("%d",&A[i]);
+    }
+    int cnt = 0;
+    //lds can be solved using lis.
+    //iterate the array backwards and find lis. this will find lds.
+    for(int i=N;i>=1;i--){
+        int idx = lower_bound(dp,dp+cnt,A[i]) - dp;
+        dp[idx] = A[i];
+        if(idx==cnt)cnt++;
+    }
+    printf("%d",N-cnt);
+    return 0;
+}
+*/
