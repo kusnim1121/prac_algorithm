@@ -1,0 +1,31 @@
+//https://www.acmicpc.net/problem/1660
+
+#include<stdio.h>
+
+int N;
+int num[111];
+int dp[300001];
+int min(int a,int b){return a<b?a:b;}
+int main(){
+    scanf("%d",&N);
+    //find number of cannon balls needed for each tetrahedron
+    int i;
+    for(i=1;;i++){
+        num[i] = num[i-1] + i*(i+1)/2;
+        //printf("%d: %d\n",i,num[i]);
+        if(num[i]>N) break;
+    }
+    i--;
+    for(int j=1;j<=N;j++)dp[j] = j;
+    for(int j = 2;j<=i;j++){
+        for(int k=1;k<=N;k++){
+            if(k-num[j] >= 0){
+                dp[k] = min(dp[k], dp[k-num[j]]+1);
+            }
+            //printf("dp[%d][%d]: %d |",j,k,dp[j][k]);
+        }
+        //printf("\n");
+    }
+    printf("%d",dp[N]);
+    return 0;
+}
