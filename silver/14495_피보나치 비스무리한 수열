@@ -1,0 +1,17 @@
+//https://www.acmicpc.net/problem/14495
+
+#include<stdio.h>
+typedef long long ll;
+int N;
+ll dp[117];
+ll fib(int n){
+    ll &ret = dp[n];
+    if(ret>0) return ret;
+    if(n==1||n==2||n==3) return 1;
+    return ret = fib(n-1) + fib(n-3);
+}
+int main(){
+    scanf("%d",&N);
+    printf("%lld",fib(N));
+    return 0;
+}
