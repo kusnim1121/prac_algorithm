@@ -1,0 +1,17 @@
+//https://www.acmicpc.net/problem/14494
+
+#include<stdio.h>
+
+int n,m;
+int dp[1111][1111];
+int main(){
+    scanf("%d%d",&n,&m);
+    dp[0][0] = 1;
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            dp[i][j] = (0LL + dp[i-1][j] + dp[i-1][j-1] + dp[i][j-1])%1000000007;
+        }
+    }
+    printf("%d",dp[n][m]);
+    return 0;
+}
