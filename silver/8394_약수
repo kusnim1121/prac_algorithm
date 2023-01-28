@@ -1,0 +1,18 @@
+//https://www.acmicpc.net/problem/8394
+
+#include<stdio.h>
+
+int n;
+int a,b,c;
+int main(){
+    scanf("%d",&n);
+    a=1,b=2;
+    for(int i=3;i<=n;i++){
+        c = (a+b)%10;
+        a = b;
+        b = c;
+    }
+    if(n<3) printf("%d",n);
+    else printf("%d",c);
+    return 0;
+}
