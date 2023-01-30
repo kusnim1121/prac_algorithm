@@ -1,0 +1,21 @@
+//https://www.acmicpc.net/problem/17212
+
+#include<stdio.h>
+#include<bits/stdc++.h>
+
+int N;
+int dp[111111] = {0,1,1,2,2,1,2,1};
+//int coin[4]= {1,2,5,7};
+int min(int a,int b){return a<b?a:b;}
+int main(){
+    scanf("%d",&N);
+    for(int i=8;i<=N;i++){
+        dp[i] = i;
+        for(int j : {1,2,5,7}){
+            //dp[i] = min(dp[i],dp[i-coin[j]]+1);
+            dp[i] = min(dp[i],dp[i-j]+1);
+        }
+    }
+    printf("%d",dp[N]);
+    return 0;
+}
