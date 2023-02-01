@@ -1,0 +1,58 @@
+//https://www.acmicpc.net/problem/15966
+
+//DP solution
+#include<stdio.h>
+
+int N;
+int A[111111];
+int dp[1111111];
+int ans;
+int max(int a,int b){return a>b?a:b;}
+int main(){
+    scanf("%d",&N);
+    for(int i=1;i<=N;i++){
+        scanf("%d",&A[i]);
+    }
+    for(int i=1;i<=N;i++){
+        dp[A[i]] = dp[A[i]-1]+1;
+        ans = max(ans,dp[A[i]]);
+    }
+    printf("%d",ans);
+    return 0;
+}
+
+//map solution
+/*
+#include<stdio.h>
+#include<unordered_map>
+#include<utility>
+using namespace std;
+typedef pair<int,int> pii;
+unordered_map<int,int> M;
+int N;
+int A[111111];
+int ans;
+int max(int a,int b){return a>b?a:b;}
+int main(){
+    scanf("%d",&N);
+    for(int i=0;i<N;i++){
+        scanf("%d",&A[i]);
+    }
+    for(int i=0;i<N;i++){
+        auto it = M.find(A[i]-1);
+        int val = 1;
+        if(it!=M.end()){
+            val = it->second +1;
+            //M.erase(it);
+        }
+        //M.insert({A[i],val});
+        M[A[i]] = val;
+    }
+    for(auto it = M.begin();it!=M.end();it++){
+        ans = max(ans,it->second);
+        //printf("%d\n",V[i].first);
+    }
+    printf("%d",ans);
+    return 0;
+}
+*/
