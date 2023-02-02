@@ -1,0 +1,62 @@
+//
+
+//top-down solution
+#include<stdio.h>
+#include<memory.h>
+
+int T;
+int n,m;
+int dp[1111][1111];
+int solve(int n,int m){
+    if(n<=0) return 0;
+    
+    int& ret = dp[n][m];
+    if(m==1){
+        return ret = (n<=3? 1:0);
+    }
+    
+    if(ret!=-1) return ret;
+    ret = 0;
+    for(int i=1;i<=3;i++){
+        ret += solve(n-i,m-1);
+        ret%=1000000009;
+    }
+    return ret;
+}
+int main(){
+    scanf("%d",&T);
+    //중요. 배열의 대부분이 0이기 때문에 -1로 초기화하여 반복 횟수를 줄여야함.
+    memset(dp,-1,sizeof(dp));
+    while(T--){
+        scanf("%d%d",&n,&m);
+        printf("%d\n",solve(n,m));
+    }
+    return 0;
+}
+
+//bottom-up solution
+/*
+#include<stdio.h>
+
+int T;
+int n,m;
+int dp[1111][1111];
+const int DIV = 1000000009;
+int main(){
+    scanf("%d",&T);
+    dp[1][1] = dp[2][1]=dp[3][1] = 1;
+    dp[2][2] = 1;
+    dp[3][2] = 2; dp[3][3] = 1;
+    for(int i=4;i<=1000;i++){
+        for(int j=2;j<=1000;j++){
+            dp[i][j] += ((dp[i-1][j-1]+dp[i-2][j-1])%DIV+dp[i-3][j-1])%DIV;
+        }
+    }
+    while(T--){
+        scanf("%d%d",&n,&m);
+        //printf("%d\n",solve(n,m));
+        printf("%d\n",dp[n][m]);
+    }
+    return 0;
+}
+*/
