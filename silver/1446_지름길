@@ -1,0 +1,34 @@
+//https://www.acmicpc.net/problem/1446
+
+#include<stdio.h>
+#include<algorithm>
+using namespace std;;
+
+struct road{
+    int start;
+    int end;
+    int dist;
+    
+};
+const int INF = 1e9;
+int N,D;
+road R[15];
+int dp[11111];
+int min(int a,int b){return a<b?a:b;}
+int main(){
+    scanf("%d%d",&N,&D);
+    for(int i=0;i<N;i++){
+        scanf("%d%d%d",&R[i].start,&R[i].end,&R[i].dist);
+    }
+    fill(dp+1,dp+D+1,INF);
+    for(int i=0;i<=D;i++){
+        dp[i] = min(dp[i],dp[i-1]+1);
+        for(int j=0;j<N;j++){
+            if(R[j].start == i){
+                dp[R[j].end] = min(dp[R[j].end],dp[i]+R[j].dist);
+            }
+        }
+    }
+    printf("%d",dp[D]);
+    return 0;
+}
