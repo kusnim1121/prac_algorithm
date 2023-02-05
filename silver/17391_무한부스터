@@ -1,0 +1,97 @@
+//https://www.acmicpc.net/problem/17391
+
+//DP solution
+#include<stdio.h>
+
+const int INF = 1e9;
+int N,M;
+int A[333][333];
+int dp[333][333];
+int min(int a,int b){return a<b?a:b;}
+int main(){
+    scanf("%d%d",&N,&M);
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=M;j++){
+            scanf("%d",&A[i][j]);
+            dp[i][j] = INF;
+        }
+    }
+    dp[1][1] = 0;
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=M;j++){
+            int p = A[i][j];
+            for(int k=1;k<=p;k++){
+                dp[i+k][j] = min(dp[i+k][j],dp[i][j]+1);
+            }
+            for(int k=1;k<=p;k++){
+                dp[i][j+k] = min(dp[i][j+k],dp[i][j]+1);
+            }
+        }
+    }
+    printf("%d",dp[N][M]);
+    return 0;
+}
+
+//BFS solution
+/*
+#include<stdio.h>
+#include<queue>
+using namespace std;
+
+struct elem{
+    int row;
+    int col;
+    int cnt;
+};
+int ans = 1e9;
+int N,M;
+int A[333][333];
+int visited[333][333];
+queue<elem> Q;
+int min(int a,int b){return a<b?a:b;}
+void solve(){
+    elem start;
+    start.row = 1;
+    start.col = 1;
+    start.cnt = 0;
+    Q.push(start);
+    while(!Q.empty()){
+        elem cur = Q.front();
+        Q.pop();
+        if(cur.row == N && cur.col == M){
+            ans = min(ans,cur.cnt);
+            continue;
+        }
+        int p = A[cur.row][cur.col];
+        elem next = cur;
+        next.cnt++;
+        for(int i=1;i<=p;i++){
+            next.row = cur.row + i;
+            if(next.row<=N && !visited[next.row][next.col]) {
+                visited[next.row][next.col] = 1;
+                Q.push(next);
+            }
+        }
+        next.row = cur.row;
+        for(int i=1;i<=p;i++){
+            next.col = cur.col + i;
+            if(next.col<=M && !visited[next.row][next.col]) {
+                visited[next.row][next.col] = 1;
+                Q.push(next);
+            }
+        }
+    }
+    return;
+}
+int main(){
+    scanf("%d%d",&N,&M);
+    for(int i=1;i<=N;i++){
+        for(int j=1;j<=M;j++){
+            scanf("%d",&A[i][j]);
+        }
+    }
+    solve();
+    printf("%d",ans);
+    return 0;
+}
+*/
