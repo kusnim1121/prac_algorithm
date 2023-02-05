@@ -1,0 +1,88 @@
+//https://www.acmicpc.net/problem/12026
+
+//nested for-loop solution
+#include<stdio.h>
+
+const int INF = 1e9;
+int N;
+int dp[1111];
+char A[1111];
+int min(int a,int b){return a<b?a:b;}
+char getNextChar(int idx){
+    char cur = A[idx];
+    if(cur=='B'){
+        return 'O';
+    }else if(cur == 'O'){
+        return 'J';
+    }else{
+        return 'B';
+    }
+}
+int main(){
+    scanf("%d",&N);
+    scanf("%s",A+1);
+    
+    for(int i=2;i<=N;i++)dp[i] = INF;
+    
+    for(int i=1;i<N;i++){
+        char nextChar = getNextChar(i);
+        for(int j=i+1;j<=N;j++){
+            if(A[j] == nextChar){
+                dp[j] = min(dp[j], dp[i] + (j-i)*(j-i));
+            }
+        }
+    }
+    printf("%d",dp[N]==INF?-1:dp[N]);
+    return 0;
+}
+
+//priority_queue solution. (not efficient)
+/*
+#include<stdio.h>
+#include<queue>
+#include<utility>
+using namespace std;
+
+typedef pair<int,int> pii;
+const int INF = 1e9;
+int ans = INF;
+int N;
+int dp[1111];
+char A[1111];
+int visited[1111];
+priority_queue<pii> Q;
+int min(int a,int b){return a<b?a:b;}
+char getNextChar(int idx){
+    char cur = A[idx];
+    if(cur=='B'){
+        return 'O';
+    }else if(cur == 'O'){
+        return 'J';
+    }else{
+        return 'B';
+    }
+}
+int main(){
+    scanf("%d",&N);
+    scanf("%s",A+1);
+    
+    for(int i=2;i<=N;i++)dp[i] = INF;
+    
+    Q.push({0,1});
+    while(!Q.empty()){
+        int idx = Q.top().second;
+        Q.pop();
+        if(visited[idx]) continue;
+        visited[idx] = 1;
+        char nextChar = getNextChar(idx);
+        for(int i=idx+1;i<=N;i++){
+            if(A[i] == nextChar){
+                dp[i] = min(dp[i], dp[idx] + (i-idx)*(i-idx));
+                Q.push({-dp[i],i});
+            }
+        }
+    }
+    printf("%d",dp[N]==INF?-1:dp[N]);
+    return 0;
+}
+*/
