@@ -1,0 +1,34 @@
+//https://www.acmicpc.net/problem/1106
+
+#include<stdio.h>
+#include<algorithm>
+using namespace std;
+const int INF = 1e9;
+int C,N;
+int Cost[22];
+int Client[22];
+//int dp[22][111111];
+int dp[111111];
+int ans = INF;
+int main(){
+    scanf("%d%d",&C,&N);
+    for(int i=1;i<=N;i++){
+        scanf("%d%d",&Cost[i],&Client[i]);
+    }
+    for(int i=1;i<=N;i++){
+        for(int j =1;j<=C*100;j++){
+            if(j-Cost[i]>=0){
+                dp[j] = max(dp[j],dp[j-Cost[i]]+Client[i]);
+            }
+            if(dp[j]>=C){
+                //printf("i: %d, j: %d\n",i,j);
+                ans = min(ans,j);
+                break;
+            }
+            //printf("[%d,%d]:%d - ",i,j,dp[i][j]);
+        }
+        //printf("\n");
+    }
+    printf("%d\n",ans);
+    return 0;
+}
