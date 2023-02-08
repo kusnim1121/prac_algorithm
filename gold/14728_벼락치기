@@ -1,0 +1,20 @@
+//https://www.acmicpc.net/problem/14728
+
+#include<stdio.h>
+
+int N,T;
+int dp[11111];
+int idx;
+int max(int a,int b){return a>b?a:b;}
+int main(){
+    scanf("%d%d",&N,&T);
+    for(int i=0;i<N;i++){
+        int K,S;
+        scanf("%d%d",&K,&S);
+        for(int j=T-K;j>=0;j--){
+            dp[j+K] = max(dp[j+K],dp[j]+S);
+        }
+    }
+    printf("%d",dp[T]);
+    return 0;
+}
