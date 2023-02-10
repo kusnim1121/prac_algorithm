@@ -1,0 +1,32 @@
+//https://www.acmicpc.net/problem/2666
+
+#include<stdio.h>
+
+int N;
+int dp[22][22][22];
+int a,b;
+int S;
+int A[22];
+int min(int a,int b){return a<b?a:b;}
+int abs(int x){return x<0?-x:x;}
+int solve(int nth, int a,int b){
+    int& ret = dp[nth][a][b];
+    if(ret>0)return ret;
+    if(nth>S){
+        return ret = 0;
+    }
+    int targ = A[nth];
+    int n1 = solve(nth+1,targ,b) + abs(a-targ);
+    int n2 = solve(nth+1,a,targ) + abs(b-targ);
+    return ret = min(n1,n2);
+}
+int main(){
+    scanf("%d",&N);
+    scanf("%d%d",&a,&b);
+    scanf("%d",&S);
+    for(int i=1;i<=S;i++){
+        scanf("%d",&A[i]);
+    }
+    printf("%d",solve(1,a,b));
+    return 0;
+}
