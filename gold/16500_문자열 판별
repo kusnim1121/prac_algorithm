@@ -1,0 +1,39 @@
+//https://www.acmicpc.net/problem/16500
+
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+
+string S;
+vector<string> VS;
+int N;
+int dp[111];
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);cout.tie(0);
+    cin>>S>>N;
+    for(int i=0;i<N;i++){
+        string s;
+        cin>>s;
+        VS.push_back(s);
+    }
+    for(int i=0;i<S.size();i++){
+        if(dp[i] || i==0){
+            for(int j=0;j<N;j++){
+                int flag = 1;
+                for(int k=0;k<VS[j].size();k++){
+                    if(S[i+k]!=VS[j][k]){
+                        flag = 0;
+                        break;
+                    }
+                }
+                if(flag){
+                    dp[i+VS[j].size()] = 1;
+                }
+            }
+        }
+    }
+    printf("%d",dp[S.size()]);
+    return 0;
+}
