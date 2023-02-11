@@ -1,0 +1,57 @@
+//https://www.acmicpc.net/problem/2602
+
+//bottom-up solution (more efficient)
+#include<stdio.h>
+#include<string.h>
+
+char S[22];
+char Dora[2][111];
+int slen,doralen;
+int dp[2][22];
+int main(){
+    scanf(" %s %s %s",S,Dora[0],Dora[1]);
+    slen = strlen(S);
+    doralen = strlen(Dora[0]);
+    dp[0][0] = dp[1][0] = 1;
+    for(int i=0;i<doralen;i++){
+        for(int j=slen-1;j>=0;j--){
+            if(S[j] == Dora[0][i]) dp[0][j+1] += dp[1][j];
+            if(S[j] == Dora[1][i]) dp[1][j+1] += dp[0][j];
+        }
+    }
+    printf("%d",dp[0][slen] + dp[1][slen]);
+    return 0;
+}
+
+//recursive solution
+/*
+#include<stdio.h>
+#include<string.h>
+
+char S[22];
+char Dora[2][111];
+int slen,doralen;
+int dp[22][111][2];
+int solve(int sIdx, int fromIdx, int dora){
+    if(sIdx>=slen){
+        return 1;
+    }
+    int& ret = dp[sIdx][fromIdx][dora];
+    if(ret>0) return ret;
+    
+    char targChar = S[sIdx];
+    for(int i = fromIdx;i<doralen;i++){
+        if(Dora[dora][i] == targChar){
+            ret+=solve(sIdx+1,i+1,dora^1);
+        }
+    }
+    return ret;
+}
+int main(){
+    scanf(" %s %s %s",S,Dora[0],Dora[1]);
+    slen = strlen(S);
+    doralen = strlen(Dora[0]);
+    printf("%d",solve(0,0,0) + solve(0,0,1));
+    return 0;
+}
+*/
