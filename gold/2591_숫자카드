@@ -1,0 +1,34 @@
+//https://www.acmicpc.net/problem/2591
+
+#include<stdio.h>
+
+int dp[44];
+char in[44];
+int N;
+int toInt(char c){
+    return (c - '0');
+}
+int strlen(char* s){
+    int ret = 0;
+    for(char c = s[0]; c!='\0';c = *++s){
+        ret++;
+    }
+    return ret;
+}
+int main(){
+    scanf("%s",in+1);
+    N = strlen(in+1);
+    dp[0] = dp[1] = 1;
+    for(int i=2;i<=N;i++){
+        int t = toInt(in[i-1]);
+        int o = toInt(in[i]);
+        if(o!=0){
+            dp[i]+=dp[i-1];
+        }
+        if(t*10 + o <= 34 && t!=0){
+            dp[i]+=dp[i-2];
+        }
+    }
+    printf("%d",dp[N]);
+    return 0;
+}
