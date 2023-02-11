@@ -1,0 +1,29 @@
+//https://www.acmicpc.net/problem/1958
+
+#include<stdio.h>
+#include<string.h>
+
+char a[111],b[111],c[111];
+int dp[111][111][111];
+int max(int a,int b){return a>b?a:b;}
+int main(){
+    scanf(" %s %s %s",a+1,b+1,c+1);
+    int alen = strlen(a+1);
+    int blen = strlen(b+1);
+    int clen = strlen(c+1);
+    //int ans = 0;
+    for(int i=1;i<=alen;i++){
+        for(int j=1;j<=blen;j++){
+            for(int k=1;k<=clen;k++){
+                if(a[i] == b[j] && b[j] == c[k]){
+                    dp[i][j][k] = dp[i-1][j-1][k-1]+1;
+                    //ans = max(ans, dp[i][j][k]);
+                }else{
+                    dp[i][j][k] = max(max(dp[i-1][j][k],dp[i][j][k-1]),dp[i][j-1][k]);
+                }
+            }
+        }
+    }
+    printf("%d",dp[alen][blen][clen]);
+    return 0;
+}
