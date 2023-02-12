@@ -1,0 +1,38 @@
+//https://www.acmicpc.net/problem/11066
+
+#include<stdio.h>
+#include<memory.h>
+
+int T,K;
+int A[555];
+int dp[555][555];
+int sum[555];
+int min(int a,int b){return a<b?a:b;}
+int solve(int start, int end){
+    int& ret = dp[start][end];
+    if(ret!=-1)return ret;
+    if(start==end){
+        return 0;
+    }
+    if(start+1 == end){
+        return ret = A[start] + A[end];
+    }
+    ret = 1e9;
+    for(int i=start;i<end;i++){
+        ret = min(ret,solve(start,i) + solve(i+1,end));
+    }
+    return ret += sum[end] - sum[start-1];
+}
+int main(){
+    scanf("%d",&T);
+    while(T--){
+        scanf("%d",&K);
+        memset(dp,-1,sizeof(dp));
+        for(int i=1;i<=K;i++){
+            scanf("%d",&A[i]);
+            sum[i] = sum[i-1] + A[i];
+        }
+        printf("%d\n",solve(1,K));
+    }
+    return 0;
+}
