@@ -1,0 +1,37 @@
+//https://www.acmicpc.net/problem/1520
+
+#include<stdio.h>
+#include<memory.h>
+
+int A[555][555];
+int dp[555][555];
+int M,N;
+int dx[] = {1,-1,0,0};
+int dy[] = {0,0,1,-1};
+int dfs(int r,int c){
+    if(r == M && c==N){
+        return 1;
+    }
+    int& ret = dp[r][c];
+    if(ret!=-1) return ret;
+    ret = 0;
+    for(int i=0;i<4;i++){
+        int newr = r + dx[i];
+        int newc = c + dy[i];
+        if(newr<=M && newr>0 && newc<=N && newc>0){
+            if(A[newr][newc] < A[r][c]) ret+=dfs(newr,newc);
+        }
+    }
+    return ret;
+}
+int main(){
+    scanf("%d%d",&M,&N);
+    memset(dp,-1,sizeof(dp));
+    for(int i=1;i<=M;i++){
+        for(int j=1;j<=N;j++){
+            scanf("%d",&A[i][j]);
+        }
+    }
+    printf("%d",dfs(1,1));
+    return 0;
+}
