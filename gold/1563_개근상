@@ -1,0 +1,29 @@
+//https://www.acmicpc.net/problem/1563
+
+#include<stdio.h>
+#include<memory.h>
+
+const int MOD = 1'000'000;
+int N;
+int dp[1111][5][5];
+int solve(int day,int late,int abs){
+    int&ret = dp[day][late][abs];
+    if(ret != -1)return ret;
+    if(late >= 2)return ret =  0;
+    if(abs >=3) return ret = 0;
+    if(day>N){
+        return ret = 1;
+    }
+    ret = 0;
+    ret += solve(day+1,late,0);
+    ret += solve(day+1,late+1,0);
+    ret += solve(day+1,late,abs+1);
+    ret %= MOD;
+    return ret;
+}
+int main(){
+    scanf("%d",&N);
+    memset(dp,-1,sizeof(dp));
+    printf("%d",solve(1,0,0));
+    return 0;
+}
